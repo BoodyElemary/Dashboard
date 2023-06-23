@@ -15,7 +15,57 @@ const routes: Routes = [
             (m) => m.DashboardModule
           ),
       },
+      {
+        path: 'customers',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/customers/customers.module').then(
+            (m) => m.CustomersModule
+          ),
+      },
+      {
+        path: 'products',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/products/products.module').then(
+            (m) => m.ProductsModule
+          ),
+      },
+      {
+        path: 'store',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/store/store.module').then((m) => m.StoreModule),
+      },
+      {
+        path: 'orders',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/orders/orders.module').then((m) => m.OrdersModule),
+      },
+      {
+        path: 'customer/:id',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/single-customer/single-customer.module').then(
+            (m) => m.SingleCustomerModule
+          ),
+      },
     ],
+  },
+  {
+    path: 'login',
+    pathMatch: 'full',
+    loadChildren: () =>
+      import('./pages/login/login.module').then((m) => m.LoginModule),
+  },
+  {
+    path: '**',
+    pathMatch: 'full',
+    loadChildren: () =>
+      import('./pages/not-found/not-found.module').then(
+        (m) => m.NotFoundModule
+      ),
   },
 ];
 @NgModule({
