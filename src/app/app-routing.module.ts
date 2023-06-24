@@ -51,6 +51,14 @@ const routes: Routes = [
             (m) => m.SingleCustomerModule
           ),
       },
+      {
+        path: 'products/add',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/add-product/add-product.module').then(
+            (m) => m.AddProductModule
+          ),
+      },
     ],
   },
   {
