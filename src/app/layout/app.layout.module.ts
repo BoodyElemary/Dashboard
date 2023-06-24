@@ -15,32 +15,44 @@ import { RouterModule } from '@angular/router';
 import { AppTopBarComponent } from './app.topbar.component';
 import { AppFooterComponent } from './app.footer.component';
 import { AppConfigModule } from './config/config.module';
-import { AppSidebarComponent } from "./app.sidebar.component";
-import { AppLayoutComponent } from "./app.layout.component";
+import { AppSidebarComponent } from './app.sidebar.component';
+import { AppLayoutComponent } from './app.layout.component';
+import { MessageModule } from 'primeng/message';
+import { MessagesModule } from 'primeng/messages';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ButtonModule } from 'primeng/button';
+import { TableModule } from 'primeng/table';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
-    declarations: [
-        AppMenuitemComponent,
-        AppTopBarComponent,
-        AppFooterComponent,
-        AppMenuComponent,
-        AppSidebarComponent,
-        AppLayoutComponent,
-    ],
-    imports: [
-        BrowserModule,
-        FormsModule,
-        HttpClientModule,
-        BrowserAnimationsModule,
-        InputTextModule,
-        SidebarModule,
-        BadgeModule,
-        RadioButtonModule,
-        InputSwitchModule,
-        RippleModule,
-        RouterModule,
-        AppConfigModule
-    ],
-    exports: [AppLayoutComponent]
+  declarations: [
+    AppMenuitemComponent,
+    AppTopBarComponent,
+    AppFooterComponent,
+    AppMenuComponent,
+    AppSidebarComponent,
+    AppLayoutComponent,
+  ],
+  imports: [
+    ButtonModule,
+    TableModule,
+    MessageModule,
+    MessagesModule,
+    NoopAnimationsModule,
+    BrowserModule,
+    FormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    InputTextModule,
+    SidebarModule,
+    BadgeModule,
+    RadioButtonModule,
+    InputSwitchModule,
+    RippleModule,
+    RouterModule,
+    AppConfigModule,
+  ],
+  exports: [AppLayoutComponent],
+  providers: [MessageService],
 })
-export class AppLayoutModule { }
+export class AppLayoutModule {}

@@ -1,0 +1,210 @@
+<button
+  pButton
+  type="button"
+  label="Add Admin"
+  (click)="showAddAdminDialog()"
+  class="mb-3"
+></button>
+
+<p-dialog
+  header="Add Admin"
+  [(visible)]="displayAddAdminDialog"
+  [responsive]="true"
+  [modal]="true"
+  [style]="{ width: '400px' }"
+  [baseZIndex]="10000"
+>
+  <div class="p-fluid">
+    <div class="p-field mb-3">
+      <label for="name">Name</label>
+      <input id="name" type="text" pInputText [(ngModel)]="newAdmin.fullName" />
+    </div>
+    <div class="p-field mb-3">
+      <label for="password">Password</label>
+      <div class="p-inputgroup">
+        <input
+          id="password"
+          [type]="passwordType"
+          pInputText
+          [(ngModel)]="newAdmin.password"
+          [ngClass]="{
+            'p-invalid':
+              password.invalid && (password.dirty || password.touched)
+          }"
+          #password="ngModel"
+          name="password"
+          [maxlength]="50"
+        />
+        <button
+          pButton
+          pPassword
+          type="button"
+          icon="{{
+            passwordType === 'password' ? 'pi pi-eye-slash' : 'pi pi-eye'
+          }}"
+          (click)="
+            passwordType = passwordType === 'password' ? 'text' : 'password'
+          "
+        ></button>
+      </div>
+      <small
+        class="p-invalid"
+        *ngIf="password.invalid && (password.dirty || password.touched)"
+        >Password is required</small
+      >
+    </div>
+    <div class="p-field mb-3">
+      <label for="store">Store</label>
+      <p-dropdown
+        id="store"
+        [options]="stores"
+        [(ngModel)]="newAdmin.store"
+        [style]="{ width: '100%' }"
+        [optionLabel]="'name'"
+        [optionValue]="'id'"
+        [filter]="true"
+        filterPlaceholder="Search"
+        placeholder="Select a store"
+        [appendTo]="'body'"
+      >
+        <ng-template let-store pTemplate="item">
+          <div>{{ store.name }}</div>
+        </ng-template>
+      </p-dropdown>
+    </div>
+  </div>
+  <div class="p-dialog-footer">
+    <button
+      pButton
+      type="button"
+      label="Cancel"
+      class="p-button-secondary"
+      (click)="hideAddAdminDialog()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Save"
+      class="p-button-primary"
+      (click)="save()"
+    ></button>
+  </div>
+</p-dialog>
+<p-table
+  [value]="this.admins"
+  [paginator]="true"
+  [rows]="12"
+  [responsive]="true"
+  [selectionMode]="'single'"
+  [(selection)]="this.selectedAdmin"
+  (onRowSelect)="this.onRowSelect($event)"
+  responsiveLayout="scroll"
+  [rowsPerPageOptions]="[12, 24, 36]"
+  [rowHover]="true"
+  selectionMode="multiple"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th colspan="100%">
+        <input
+          [style]="{ width: '100%' }"
+          pInputText
+          type="text"
+          [(ngModel)]="searchQuery"
+          (input)="search()"
+          placeholder="Search ..."
+        />
+      </th>
+    </tr>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Store</th>
+      <th>Actions</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-admin>
+    <tr>
+      <td>{{ admin._id }}</td>
+      <td>{{ admin.fullName }}</td>
+      <td>{{ admin.store.name }}</td>
+
+      <td>
+        <button
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-pencil"
+          class="p-button-rounded p-button-success mr-2"
+          (click)="this.showDialogToEdit(admin)"
+        ></button>
+        <button
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-trash"
+          class="p-button-rounded p-button-danger"
+          (click)="this.confirmDelete()"
+        ></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-dialog
+  header="Admin Information"
+  [(visible)]="this.displayDialog"
+  [responsive]="true"
+  [modal]="true"
+  [style]="{ width: '400px' }"
+  [baseZIndex]="10000"
+>
+  <div class="p-fluid">
+    <div class="p-field mb-3">
+      <label for="name" (click)="print(this)">Name</label>
+      <input
+        id="name"
+        type="text"
+        pInputText
+        [(ngModel)]="this.admin.fullName"
+      />
+    </div>
+    <div class="p-field mb-3">
+      <label for="store">Store</label>
+      <p-dropdown
+        class="mb-3"
+        id="store"
+        [options]="stores"
+        [(ngModel)]="this.admin.store"
+        [style]="{ width: '100%' }"
+        [optionLabel]="'name'"
+        [optionValue]="'id'"
+        [filter]="true"
+        filterPlaceholder="Search"
+        placeholder="Select a store"
+        [appendTo]="'body'"
+      >
+        <ng-template let-store pTemplate="item">
+          <div>{{ store.name }}</div>
+        </ng-template>
+      </p-dropdown>
+    </div>
+  </div>
+  <div class="p-dialog-footer mt-3">
+    <button
+      pButton
+      type="button"
+      label="Cancel"
+      class="p-button-secondary"
+      (click)="this.displayDialog = false"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Save"
+      class="p-button-primary"
+      (click)="this.save()"
+    ></button>
+  </div>
+</p-dialog>

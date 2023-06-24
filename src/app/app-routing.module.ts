@@ -51,6 +51,14 @@ const routes: Routes = [
             (m) => m.SingleCustomerModule
           ),
       },
+      {
+        path: 'admins',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/admins/admins.module').then(
+            (m) => m.AdminsModule
+          ),
+      },
     ],
   },
   {
