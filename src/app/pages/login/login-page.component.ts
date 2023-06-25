@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
-
+import { LoginService } from 'src/app/service/login.service';
+import { Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
+import { MessageService } from 'primeng/api';
 @Component({
+  providers: [MessageService],
+
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.scss'],
@@ -16,7 +21,41 @@ import { Component } from '@angular/core';
   ],
 })
 export class LoginPageComponent {
-  valCheck: string[] = ['remember'];
+  fullName: string = '';
+  password: string = '';
+  role: string = 'admin';
+  remember: boolean = false;
+  constructor(
+    private loginService: LoginService,
+    private router: Router,
+    private messageService: MessageService
+  ) {}
 
-  password!: string;
+  onSubmit() {
+    console.log(this.fullName, this.password, this.role, this.remember);
+    this.loginService
+      .login(this.fullName, this.password, this.role, this.remember)
+      .then((success) => {
+        if (success) {
+          // Navigate to the home page if login is successful
+          this.router.navigate(['/']);
+        } else {
+          // Display an error message if login is unsuccessful
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Login failed',
+            detail: 'Invalid name or password',
+          });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        // Display an error message if an error occurs during login
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Login failed',
+          detail: 'An error occurred during login',
+        });
+      });
+  }
 }

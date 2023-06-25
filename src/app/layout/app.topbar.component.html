@@ -1,10 +1,11 @@
 <div class="layout-topbar">
   <a class="layout-topbar-logo" routerLink="">
     <img src="assets/layout/images/Logo.webp" alt="logo" />
-    <span>Bobazona Branch Name</span>
+    <span>Bobazona<span *ngIf="loginService.getRole()==='admin'"> Branch Name</span></span>
   </a>
 
   <button
+  *ngIf="loginService.isLogin()"
     #menubutton
     class="p-link layout-menu-button layout-topbar-button"
     (click)="layoutService.onMenuToggle()"
@@ -28,15 +29,19 @@
         layoutService.state.profileSidebarVisible
     }"
   >
-    <button class="p-link layout-topbar-button">
+    <button  class="p-link layout-topbar-button">
       <i class="pi pi-calendar"></i>
       <span>Calendar</span>
     </button>
-    <button class="p-link layout-topbar-button">
+    <button *ngIf="loginService.isLogin()" class="p-link layout-topbar-button">
       <i class="pi pi-user"></i>
       <span>Profile</span>
     </button>
-    <button class="p-link layout-topbar-button" [routerLink]="'/documentation'">
+    <button
+      class="p-link layout-topbar-button"
+      [routerLink]="'/login'"
+      (click)="loginService.logout()"
+    >
       <i class="pi pi-sign-out"></i>
       <span>Log out</span>
     </button>

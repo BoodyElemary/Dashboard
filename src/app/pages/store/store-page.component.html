@@ -1,1 +1,553 @@
-<p>store-page works!</p>
+<p-messages></p-messages>
+
+<button
+  pButton
+  type="button"
+  label="Add Store"
+  (click)="showAddStoreDialog()"
+  class="mb-3"
+></button>
+
+<p-dialog
+  header="Add Store"
+  [(visible)]="displayAddStoreDialog"
+  [responsive]="true"
+  [modal]="true"
+  [style]="{ width: '800px' }"
+  [baseZIndex]="10000"
+>
+  <div class="p-fluid">
+    <div class="p-field mb-3">
+      <label for="name">Name</label>
+      <input id="name" type="text" pInputText [(ngModel)]="newStore.name" />
+    </div>
+    <div class="p-field mb-3">
+      <label for="heroImage">Hero Image</label>
+      <p-fileUpload
+        name="heroImage"
+        url="/upload"
+        accept="image/*"
+        (onUpload)="onHeroImageChange($event)"
+        chooseLabel="Select Image"
+        cancelIcon="Cancel"
+        uploadLabel="Upload"
+      ></p-fileUpload>
+    </div>
+    <div class="p-field mb-3">
+      <label for="map">Map URL</label>
+      <input
+        id="map"
+        type="text"
+        pInputText
+        [(ngModel)]="newStore.map"
+        [required]="true"
+      />
+    </div>
+    <div class="p-field mb-3">
+      <label for="pageImage">Page Image</label>
+      <p-fileUpload
+        name="pageImage"
+        url="/upload"
+        accept="image/*"
+        (onUpload)="onPageImageChange($event)"
+        chooseLabel="Select Image"
+        cancelIcon="Cancel"
+        uploadLabel="Upload"
+      ></p-fileUpload>
+    </div>
+    <div class="p-field mb-3">
+      <label for="location">Location</label>
+      <input
+        id="location"
+        type="text"
+        pInputText
+        [(ngModel)]="newStore.location"
+      />
+    </div>
+    <div class="p-field mb-3">
+      <label for="phone">Phone</label>
+      <input id="phone" type="text" pInputText [(ngModel)]="newStore.phone" />
+    </div>
+    <div class="p-field mb-3">
+      <label for="workingHours">Working Hours</label>
+      <div class="p-grid">
+        <div class="p-col-12 p-md-6">
+          <label for="{{ this.newStore.workingHours[0].day }}">{{
+            this.newStore.workingHours[0].day
+          }}</label>
+          <div class="p-inputgroup">
+            <p-dropdown
+              [style]="{ width: '350px' }"
+              id="mondayStart"
+              [options]="hours"
+              [(ngModel)]="newStore.workingHours[0].startHour"
+              name="mondayStart"
+            ></p-dropdown>
+            <span class="p-inputgroup-addon">to</span>
+            <p-dropdown
+              [style]="{ width: '350px' }"
+              id="mondayEnd"
+              [options]="hours"
+              [(ngModel)]="newStore.workingHours[0].endHour"
+              name="mondayEnd"
+            ></p-dropdown>
+          </div>
+        </div>
+        <div class="p-col-12 p-md-6">
+          <label for="{{ this.newStore.workingHours[1].day }}">{{
+            this.newStore.workingHours[1].day
+          }}</label>
+          <div class="p-inputgroup">
+            <p-dropdown
+              [style]="{ width: '350px' }"
+              id="tuesdayStart"
+              [options]="hours"
+              [(ngModel)]="newStore.workingHours[1].startHour"
+              name="tuesdayStart"
+            ></p-dropdown>
+            <span class="p-inputgroup-addon">to</span>
+            <p-dropdown
+              [style]="{ width: '350px' }"
+              id="tuesdayEnd"
+              [options]="hours"
+              [(ngModel)]="newStore.workingHours[1].endHour"
+              name="tuesdayEnd"
+            ></p-dropdown>
+          </div>
+        </div>
+        <div class="p-col-12 p-md-6">
+          <label for="{{ this.newStore.workingHours[2].day }}">{{
+            this.newStore.workingHours[2].day
+          }}</label>
+          <div class="p-inputgroup">
+            <p-dropdown
+              [style]="{ width: '350px' }"
+              id="wednesdayStart"
+              [options]="hours"
+              [(ngModel)]="newStore.workingHours[2].startHour"
+              name="wednesdayStart"
+            ></p-dropdown>
+            <span class="p-inputgroup-addon">to</span>
+            <p-dropdown
+              [style]="{ width: '350px' }"
+              id="wednesdayEnd"
+              [options]="hours"
+              [(ngModel)]="newStore.workingHours[2].endHour"
+              name="wednesdayEnd"
+            ></p-dropdown>
+          </div>
+        </div>
+        <div class="p-col-12 p-md-6">
+          <label for="{{ this.newStore.workingHours[3].day }}">{{
+            this.newStore.workingHours[3].day
+          }}</label>
+          <div class="p-inputgroup">
+            <p-dropdown
+              [style]="{ width: '350px' }"
+              id="thursdayStart"
+              [options]="hours"
+              [(ngModel)]="newStore.workingHours[3].startHour"
+              name="thursdayStart"
+            ></p-dropdown>
+            <span class="p-inputgroup-addon">to</span>
+            <p-dropdown
+              [style]="{ width: '350px' }"
+              id="thursdayEnd"
+              [options]="hours"
+              [(ngModel)]="newStore.workingHours[3].endHour"
+              name="thursdayEnd"
+            ></p-dropdown>
+          </div>
+        </div>
+        <div class="p-col-12 p-md-6">
+          <label for="{{ this.newStore.workingHours[4].day }}">{{
+            this.newStore.workingHours[4].day
+          }}</label>
+          <div class="p-inputgroup">
+            <p-dropdown
+              [style]="{ width: '350px' }"
+              id="fridayStart"
+              [options]="hours"
+              [(ngModel)]="newStore.workingHours[4].startHour"
+              name="fridayStart"
+            ></p-dropdown>
+            <span class="p-inputgroup-addon">to</span>
+            <p-dropdown
+              [style]="{ width: '350px' }"
+              id="fridayEnd"
+              [options]="hours"
+              [(ngModel)]="newStore.workingHours[4].endHour"
+              name="fridayEnd"
+            ></p-dropdown>
+          </div>
+        </div>
+        <div class="p-col-12 p-md-6">
+          <label for="{{ this.newStore.workingHours[5].day }}">{{
+            this.newStore.workingHours[5].day
+          }}</label>
+          <div class="p-inputgroup">
+            <p-dropdown
+              [style]="{ width: '350px' }"
+              id="saturdayStart"
+              [options]="hours"
+              [(ngModel)]="newStore.workingHours[5].startHour"
+              name="saturdayStart"
+            ></p-dropdown>
+            <span class="p-inputgroup-addon">to</span>
+            <p-dropdown
+              [style]="{ width: '350px' }"
+              id="saturdayEnd"
+              [options]="hours"
+              [(ngModel)]="newStore.workingHours[5].endHour"
+              name="saturdayEnd"
+            ></p-dropdown>
+          </div>
+        </div>
+        <div class="p-col-12 p-md-6">
+          <label for="{{ this.newStore.workingHours[6].day }}">{{
+            this.newStore.workingHours[6].day
+          }}</label>
+          <div class="p-inputgroup">
+            <p-dropdown
+              [style]="{ width: '350px' }"
+              id="sundayStart"
+              [options]="hours"
+              [(ngModel)]="newStore.workingHours[6].startHour"
+              name="sundayStart"
+            ></p-dropdown>
+            <span class="p-inputgroup-addon">to</span>
+            <p-dropdown
+              [style]="{ width: '350px' }"
+              id="sundayEnd"
+              [options]="hours"
+              [(ngModel)]="newStore.workingHours[6].endHour"
+              name="sundayEnd"
+            ></p-dropdown>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="p-dialog-footer">
+    <button
+      pButton
+      type="button"
+      label="Cancel"
+      class="p-button-secondary"
+      (click)="hideAddStoreDialog()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Save"
+      class="p-button-primary"
+      (click)="save()"
+    ></button>
+  </div>
+</p-dialog>
+
+<p-table
+  [value]="this.stores"
+  [paginator]="true"
+  [rows]="12"
+  [responsive]="true"
+  [selectionMode]="'single'"
+  [(selection)]="this.selectedStore"
+  (onRowSelect)="this.onRowSelect($event)"
+  responsiveLayout="scroll"
+  [rowsPerPageOptions]="[12, 24, 36]"
+  [rowHover]="true"
+  selectionMode="multiple"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Name</th>
+      <th>Hero</th>
+      <th>Image</th>
+      <th>Phone</th>
+      <th>Location</th>
+      <th>Holiday</th>
+      <th>Actions</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-store>
+    <tr>
+      <td style="width: 14%; min-width: 8rem">{{ store.name }}</td>
+      <td style="width: 14%; min-width: 10rem">
+        <img
+          [src]="store.heroImage"
+          [alt]="store.name"
+          width="100"
+          class="shadow-4"
+        />
+      </td>
+      <td style="width: 14%; min-width: 10rem">
+        <img
+          [src]="store.pageImage"
+          [alt]="store.name"
+          width="100"
+          class="shadow-4"
+        />
+      </td>
+      <td style="width: 14%; min-width: 9rem">{{ store.phone }}</td>
+      <td style="width: 14%; min-width: 10rem">{{ store.location }}</td>
+      <td style="width: 14%; min-width: 8rem">
+        <span [class]="'product-badge status-' + store.isHoliday">{{
+          store.isHoliday
+        }}</span>
+      </td>
+      <td style="width: 14%; min-width: 10rem">
+        <button
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-pencil"
+          class="p-button-rounded p-button-success mr-2"
+          (click)="this.showDialogToEdit(store)"
+        ></button>
+        <button
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-trash"
+          class="p-button-rounded p-button-danger"
+          (click)="this.confirmDelete(store._id)"
+        ></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-dialog
+  header="Store Information"
+  [(visible)]="this.displayDialog"
+  [responsive]="true"
+  [modal]="true"
+  [style]="{ width: '800px' }"
+  [baseZIndex]="10000"
+>
+  <div class="p-fluid">
+    <div class="p-field mb-3">
+      <label for="name">Name</label>
+      <input id="name" type="text" pInputText [(ngModel)]="this.store.name" />
+    </div>
+    <div class="p-field mb-3">
+      <label for="heroImage">Hero Image</label>
+      <p-fileUpload
+        name="heroImage"
+        url="/upload"
+        accept="image/*"
+        (onUpload)="onHeroImageChange($event)"
+        chooseLabel="Select Image"
+        cancelIcon="Cancel"
+        uploadLabel="Upload"
+      ></p-fileUpload>
+    </div>
+    <div class="p-field mb-3">
+      <label for="map">Map URL</label>
+      <input id="map" type="text" pInputText [(ngModel)]="this.store.map" />
+    </div>
+    <div class="p-field mb-3">
+      <label for="pageImage">Page Image</label>
+      <p-fileUpload
+        name="pageImage"
+        url="/upload"
+        accept="image/*"
+        (onUpload)="onPageImageChange($event)"
+        chooseLabel="Select Image"
+        cancelIcon="Cancel"
+        uploadLabel="Upload"
+      ></p-fileUpload>
+    </div>
+    <div class="p-field mb-3">
+      <label for="location">Location</label>
+      <input
+        id="location"
+        type="text"
+        pInputText
+        [(ngModel)]="this.store.location"
+      />
+    </div>
+    <div class="p-field mb-3">
+      <label for="phone">Phone</label>
+      <input id="phone" type="text" pInputText [(ngModel)]="this.store.phone" />
+    </div>
+    <div class="p-field mb-3">
+      <label for="workingHours">Working Hours</label>
+      <div class="p-grid">
+        <div class="p-col-12 p-md-6">
+          <label for="{{ this.store.workingHours[0].day }}">{{
+            this.store.workingHours[0].day
+          }}</label>
+          <div class="p-inputgroup">
+            <p-dropdown
+              [style]="{ width: '350px' }"
+              id="mondayStart"
+              [options]="hours"
+              [(ngModel)]="this.store.workingHours[0].startHour"
+              name="mondayStart"
+            ></p-dropdown>
+            <span class="p-inputgroup-addon">to</span>
+            <p-dropdown
+              [style]="{ width: '350px' }"
+              id="mondayEnd"
+              [options]="hours"
+              [(ngModel)]="this.store.workingHours[0].endHour"
+              name="mondayEnd"
+            ></p-dropdown>
+          </div>
+        </div>
+        <div class="p-col-12 p-md-6">
+          <label for="{{ this.store.workingHours[1].day }}">{{
+            this.store.workingHours[1].day
+          }}</label>
+          <div class="p-inputgroup">
+            <p-dropdown
+              [style]="{ width: '350px' }"
+              id="tuesdayStart"
+              [options]="hours"
+              [(ngModel)]="this.store.workingHours[1].startHour"
+              name="tuesdayStart"
+            ></p-dropdown>
+            <span class="p-inputgroup-addon">to</span>
+            <p-dropdown
+              [style]="{ width: '350px' }"
+              id="tuesdayEnd"
+              [options]="hours"
+              [(ngModel)]="this.store.workingHours[1].endHour"
+              name="tuesdayEnd"
+            ></p-dropdown>
+          </div>
+        </div>
+        <div class="p-col-12 p-md-6">
+          <label for="this.store.workingHours[2].day">{{
+            this.store.workingHours[2].day
+          }}</label>
+          <div class="p-inputgroup">
+            <p-dropdown
+              [style]="{ width: '350px' }"
+              id="wednesdayStart"
+              [options]="hours"
+              [(ngModel)]="this.store.workingHours[2].startHour"
+              name="wednesdayStart"
+            ></p-dropdown>
+            <span class="p-inputgroup-addon">to</span>
+            <p-dropdown
+              [style]="{ width: '350px' }"
+              id="wednesdayEnd"
+              [options]="hours"
+              [(ngModel)]="this.store.workingHours[2].endHour"
+              name="wednesdayEnd"
+            ></p-dropdown>
+          </div>
+        </div>
+        <div class="p-col-12 p-md-6">
+          <label for="this.store.workingHours[3].day">{{
+            this.store.workingHours[3].day
+          }}</label>
+          <div class="p-inputgroup">
+            <p-dropdown
+              [style]="{ width: '350px' }"
+              id="thursdayStart"
+              [options]="hours"
+              [(ngModel)]="this.store.workingHours[3].startHour"
+              name="thursdayStart"
+            ></p-dropdown>
+            <span class="p-inputgroup-addon">to</span>
+            <p-dropdown
+              [style]="{ width: '350px' }"
+              id="thursdayEnd"
+              [options]="hours"
+              [(ngModel)]="this.store.workingHours[3].endHour"
+              name="thursdayEnd"
+            ></p-dropdown>
+          </div>
+        </div>
+        <div class="p-col-12 p-md-6">
+          <label for="this.store.workingHours[4].day">{{
+            this.store.workingHours[4].day
+          }}</label>
+          <div class="p-inputgroup">
+            <p-dropdown
+              [style]="{ width: '350px' }"
+              id="fridayStart"
+              [options]="hours"
+              [(ngModel)]="this.store.workingHours[4].startHour"
+              name="fridayStart"
+            ></p-dropdown>
+            <span class="p-inputgroup-addon">to</span>
+            <p-dropdown
+              [style]="{ width: '350px' }"
+              id="fridayEnd"
+              [options]="hours"
+              [(ngModel)]="this.store.workingHours[4].endHour"
+              name="fridayEnd"
+            ></p-dropdown>
+          </div>
+        </div>
+        <div class="p-col-12 p-md-6">
+          <label for="this.store.workingHours[5].day">{{
+            this.store.workingHours[5].day
+          }}</label>
+          <div class="p-inputgroup">
+            <p-dropdown
+              [style]="{ width: '350px' }"
+              id="saturdayStart"
+              [options]="hours"
+              [(ngModel)]="this.store.workingHours[5].startHour"
+              name="saturdayStart"
+            ></p-dropdown>
+            <span class="p-inputgroup-addon">to</span>
+            <p-dropdown
+              [style]="{ width: '350px' }"
+              id="saturdayEnd"
+              [options]="hours"
+              [(ngModel)]="this.store.workingHours[5].endHour"
+              name="saturdayEnd"
+            ></p-dropdown>
+          </div>
+        </div>
+        <div class="p-col-12 p-md-6">
+          <label for="this.store.workingHours[6].day">{{
+            this.store.workingHours[6].day
+          }}</label>
+          <div class="p-inputgroup">
+            <p-dropdown
+              [style]="{ width: '350px' }"
+              id="sundayStart"
+              [options]="hours"
+              [(ngModel)]="this.store.workingHours[6].startHour"
+              name="sundayStart"
+            ></p-dropdown>
+            <span class="p-inputgroup-addon">to</span>
+            <p-dropdown
+              [style]="{ width: '350px' }"
+              id="sundayEnd"
+              [options]="hours"
+              [(ngModel)]="this.store.workingHours[6].endHour"
+              name="sundayEnd"
+            ></p-dropdown>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="p-dialog-footer mt-3">
+    <button
+      pButton
+      type="button"
+      label="Cancel"
+      class="p-button-secondary"
+      (click)="this.hideAddStoreDialog()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Save"
+      class="p-button-primary"
+      (click)="this.save()"
+    ></button>
+  </div>
+</p-dialog>
+<p-confirmDialog></p-confirmDialog>

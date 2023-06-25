@@ -1,14 +1,48 @@
-<div class="layout-wrapper" [ngClass]="containerClass">
-    <app-topbar></app-topbar>
-    <div class="layout-sidebar">
-        <app-sidebar></app-sidebar>
+<div
+  class="layout-wrapper"
+  [ngClass]="containerClass"
+  *ngIf="loginService.isLogin()"
+>
+  <app-topbar></app-topbar>
+  <div class="layout-sidebar" *ngIf="loginService.isLogin()">
+    <app-sidebar></app-sidebar>
+  </div>
+  <div class="layout-main-container">
+    <div class="layout-main" *ngIf="loginService.isLogin()">
+
+      <router-outlet></router-outlet>
     </div>
-    <div class="layout-main-container">
-        <div class="layout-main">
-            <router-outlet></router-outlet>
+    <app-footer></app-footer>
+  </div>
+  <app-config></app-config>
+  <div class="layout-mask"></div>
+</div>
+<div class="layout-wrapper" *ngIf="!loginService.isLogin()">
+  <app-topbar></app-topbar>
+
+  <div class="layout-main-container">
+    <div>
+      <div
+        class="surface-ground flex align-items-center justify-content-center overflow-hidden"
+      >
+        <div class="flex flex-column align-items-center justify-content-center">
+          <div class="login-message">
+            <h1>Please Sign In</h1>
+            <p>You need to be logged in to access this page.</p>
+            <br />
+          </div>
+          <button
+            pButton
+            pRipple
+            label="Sign In"
+            class="w-full p-3 text-xl"
+            (click)="navigateToLogin()"
+          ></button>
         </div>
-        <app-footer></app-footer>
+      </div>
     </div>
-    <app-config></app-config>
-    <div class="layout-mask"></div>
+    <app-footer></app-footer>
+  </div>
+  <app-config></app-config>
+  <div class="layout-mask"></div>
 </div>
