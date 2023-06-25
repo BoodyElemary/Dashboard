@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { PasswordModule } from 'primeng/password';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
+import { MessagesModule } from 'primeng/messages';
 
 const routes: Routes = [
   {
@@ -17,7 +18,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  providers:[MessageService],
+  providers: [MessageService],
   declarations: [LoginPageComponent],
   imports: [
     RouterModule.forChild(routes),
@@ -27,6 +28,7 @@ const routes: Routes = [
     InputTextModule,
     FormsModule,
     PasswordModule,
+    MessagesModule,
   ],
 })
 export class LoginModule {}

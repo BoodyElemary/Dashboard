@@ -9,6 +9,9 @@ import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { MessagesModule } from 'primeng/messages';
 
 const routes: Routes = [
   {
@@ -28,7 +31,9 @@ const routes: Routes = [
     FormsModule,
     InputTextModule,
     DropdownModule,
+    ConfirmDialogModule,
+    MessagesModule,
   ],
-  providers: [MessageService],
+  providers: [MessageService, ConfirmationService],
 })
 export class AdminsModule {}

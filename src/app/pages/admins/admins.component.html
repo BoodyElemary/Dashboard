@@ -1,3 +1,5 @@
+  <p-messages></p-messages>
+
 <button
   pButton
   type="button"
@@ -145,7 +147,7 @@
           type="button"
           icon="pi pi-trash"
           class="p-button-rounded p-button-danger"
-          (click)="this.confirmDelete()"
+          (click)="this.confirmDelete(admin._id)"
         ></button>
       </td>
     </tr>
@@ -208,3 +210,4 @@
     ></button>
   </div>
 </p-dialog>
+<p-confirmDialog></p-confirmDialog>

@@ -9,12 +9,12 @@ import { Subscription, Observable } from 'rxjs';
 import { AdminService } from 'src/app/service/admin.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { StoreService } from 'src/app/service/store.service';
-import { NgForm } from '@angular/forms';
-import { Table } from 'primeng/table';
+
 
 @Component({
   selector: 'app-admins',
   templateUrl: './admins.component.html',
+  styleUrls: ['./admins.component.scss'],
   providers: [ConfirmationService, MessageService],
 })
 export class AdminsComponent implements OnInit, OnDestroy, OnChanges {
@@ -73,7 +73,6 @@ export class AdminsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   showDialogToEdit(admin: any) {
-    console.log(admin);
     this.isNewAdmin = false;
     this.admin = {
       id: admin._id,
@@ -131,9 +130,9 @@ export class AdminsComponent implements OnInit, OnDestroy, OnChanges {
     this.displayDialog = false;
   }
 
-  delete() {
+  delete(id:string) {
     this.subscription.add(
-      this.adminService.deleteAdmin(this.selectedAdmin.id).subscribe(
+      this.adminService.deleteAdmin(id).subscribe(
         (data) => {
           this.messageService.add({
             severity: 'success',
@@ -161,13 +160,13 @@ export class AdminsComponent implements OnInit, OnDestroy, OnChanges {
     this.displayDialog = true;
   }
 
-  confirmDelete() {
+  confirmDelete(id:string) {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this admin?',
       header: 'Confirm',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.delete();
+        this.delete(id);
       },
       reject: () => {},
     });
@@ -199,10 +198,10 @@ export class AdminsComponent implements OnInit, OnDestroy, OnChanges {
               this.admins = data;
             },
             (error) => {
-              this.admins = this.loadAdmins();
+             this.loadAdmins();
             }
           )
         )
-      : (this.admins = this.loadAdmins());
+      : (this.loadAdmins());
   }
 }
