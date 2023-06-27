@@ -9,7 +9,7 @@ import { Subscription, Observable } from 'rxjs';
 import { AdminService } from 'src/app/service/admin.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { StoreService } from 'src/app/service/store.service';
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admins',
@@ -19,7 +19,6 @@ import { StoreService } from 'src/app/service/store.service';
 })
 export class AdminsComponent implements OnInit, OnDestroy, OnChanges {
   admins: any = [];
-  selectedAdmin: any;
   displayDialog: boolean = false;
   isNewAdmin: boolean = false;
   admin: any = { id: '', fullName: '', store: '' };
@@ -35,6 +34,7 @@ export class AdminsComponent implements OnInit, OnDestroy, OnChanges {
   searchResults$: Observable<any> | undefined;
 
   constructor(
+    private router: Router,
     private storeService: StoreService,
     private adminService: AdminService,
     private confirmationService: ConfirmationService,
@@ -64,8 +64,19 @@ export class AdminsComponent implements OnInit, OnDestroy, OnChanges {
       this.adminService.getAllAdmins().subscribe(
         (data) => {
           this.admins = data;
+          console.log(data);
         },
         (error) => {
+          if (error.status === 409) {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Already logged in from another device!',
+            });
+            setInterval(() => {
+              this.router.navigate(['/login']);
+            }, 2000);
+          }
           console.log(error);
         }
       )
@@ -95,6 +106,16 @@ export class AdminsComponent implements OnInit, OnDestroy, OnChanges {
             this.loadAdmins();
           },
           (error) => {
+            if (error.status === 409) {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Already logged in from another device!',
+              });
+              setInterval(() => {
+                this.router.navigate(['/login']);
+              }, 2000);
+            }
             this.messageService.add({
               severity: 'error',
               summary: 'Error',
@@ -117,6 +138,16 @@ export class AdminsComponent implements OnInit, OnDestroy, OnChanges {
             this.loadAdmins();
           },
           (error) => {
+            if (error.status === 409) {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Already logged in from another device!',
+              });
+              setInterval(() => {
+                this.router.navigate(['/login']);
+              }, 2000);
+            }
             this.messageService.add({
               severity: 'error',
               summary: 'Error',
@@ -130,7 +161,7 @@ export class AdminsComponent implements OnInit, OnDestroy, OnChanges {
     this.displayDialog = false;
   }
 
-  delete(id:string) {
+  delete(id: string) {
     this.subscription.add(
       this.adminService.deleteAdmin(id).subscribe(
         (data) => {
@@ -142,6 +173,16 @@ export class AdminsComponent implements OnInit, OnDestroy, OnChanges {
           this.loadAdmins();
         },
         (error) => {
+          if (error.status === 409) {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Already logged in from another device!',
+            });
+            setInterval(() => {
+              this.router.navigate(['/login']);
+            }, 2000);
+          }
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
@@ -154,13 +195,7 @@ export class AdminsComponent implements OnInit, OnDestroy, OnChanges {
     this.displayDialog = false;
   }
 
-  onRowSelect(event: any) {
-    this.isNewAdmin = false;
-    this.admin = { ...event.data };
-    this.displayDialog = true;
-  }
-
-  confirmDelete(id:string) {
+  confirmDelete(id: string) {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this admin?',
       header: 'Confirm',
@@ -198,10 +233,20 @@ export class AdminsComponent implements OnInit, OnDestroy, OnChanges {
               this.admins = data;
             },
             (error) => {
-             this.loadAdmins();
+              if (error.status === 409) {
+                this.messageService.add({
+                  severity: 'error',
+                  summary: 'Error',
+                  detail: 'Already logged in from another device!',
+                });
+                setInterval(() => {
+                  this.router.navigate(['/login']);
+                }, 2000);
+              }
+              this.loadAdmins();
             }
           )
         )
-      : (this.loadAdmins());
+      : this.loadAdmins();
   }
 }

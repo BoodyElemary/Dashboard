@@ -24,13 +24,12 @@
     <div class="p-field mb-3">
       <label for="heroImage">Hero Image</label>
       <p-fileUpload
+        [showUploadButton]="false"
         name="heroImage"
-        url="/upload"
         accept="image/*"
-        (onUpload)="onHeroImageChange($event)"
+        (onSelect)="onHeroImageChange($event)"
         chooseLabel="Select Image"
         cancelIcon="Cancel"
-        uploadLabel="Upload"
       ></p-fileUpload>
     </div>
     <div class="p-field mb-3">
@@ -46,13 +45,12 @@
     <div class="p-field mb-3">
       <label for="pageImage">Page Image</label>
       <p-fileUpload
+        [showUploadButton]="false"
         name="pageImage"
-        url="/upload"
         accept="image/*"
-        (onUpload)="onPageImageChange($event)"
+        (onSelect)="onPageImageChange($event)"
         chooseLabel="Select Image"
         cancelIcon="Cancel"
-        uploadLabel="Upload"
       ></p-fileUpload>
     </div>
     <div class="p-field mb-3">
@@ -252,8 +250,6 @@
   [rows]="12"
   [responsive]="true"
   [selectionMode]="'single'"
-  [(selection)]="this.selectedStore"
-  (onRowSelect)="this.onRowSelect($event)"
   responsiveLayout="scroll"
   [rowsPerPageOptions]="[12, 24, 36]"
   [rowHover]="true"
@@ -335,13 +331,12 @@
     <div class="p-field mb-3">
       <label for="heroImage">Hero Image</label>
       <p-fileUpload
+        [showUploadButton]="false"
         name="heroImage"
-        url="/upload"
         accept="image/*"
-        (onUpload)="onHeroImageChange($event)"
+        (onSelect)="onHeroImageChange($event)"
         chooseLabel="Select Image"
         cancelIcon="Cancel"
-        uploadLabel="Upload"
       ></p-fileUpload>
     </div>
     <div class="p-field mb-3">
@@ -351,13 +346,12 @@
     <div class="p-field mb-3">
       <label for="pageImage">Page Image</label>
       <p-fileUpload
+        [showUploadButton]="false"
         name="pageImage"
-        url="/upload"
         accept="image/*"
-        (onUpload)="onPageImageChange($event)"
+        (onSelect)="onPageImageChange($event)"
         chooseLabel="Select Image"
         cancelIcon="Cancel"
-        uploadLabel="Upload"
       ></p-fileUpload>
     </div>
     <div class="p-field mb-3">
@@ -539,7 +533,7 @@
       type="button"
       label="Cancel"
       class="p-button-secondary"
-      (click)="this.hideAddStoreDialog()"
+      (click)="this.hideDialogToEdit()"
     ></button>
     <button
       pButton

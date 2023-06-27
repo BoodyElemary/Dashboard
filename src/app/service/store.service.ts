@@ -39,8 +39,8 @@ export class StoreService {
     formData.append('location', store.location);
     formData.append('phone', store.phone);
     formData.append('workingHours', store.workingHours);
-    if (heroImageFile) formData.append('heroImage', heroImageFile);
-    if (pageImageFile) formData.append('pageImage', pageImageFile);
+    if (heroImageFile) formData.append('heroImage', heroImageFile, heroImageFile.name);
+    if (pageImageFile) formData.append('pageImage', pageImageFile, pageImageFile.name);
     // formData.append('heroImage', store.heroImage);
     // formData.append('pageImage', store.pageImage);
     return this.http.post<any>(this.storesUrl, formData, { headers });
@@ -62,8 +62,8 @@ export class StoreService {
     if (store.workingHours) formData.append('workingHours', store.workingHours);
     // if (store.heroImage) formData.append('heroImage', store.heroImage);
     // if (store.pageImage) formData.append('pageImage', store.pageImage);
-    if (pageImageFile) formData.append('pageImage', pageImageFile);
-    if (heroImageFile) formData.append('heroImage', heroImageFile);
+    if (pageImageFile) formData.append('pageImage', pageImageFile, pageImageFile.name);
+    if (heroImageFile) formData.append('heroImage', heroImageFile, heroImageFile.name);
 
     return this.http.put<any>(this.storesUrl, formData, { headers });
   }

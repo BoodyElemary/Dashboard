@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StoreService } from 'src/app/service/store.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-store-page',
@@ -25,7 +26,6 @@ export class StorePageComponent implements OnInit {
       { day: 'Sunday', startHour: 0, endHour: 0 },
     ],
   };
-  selectedStore: any;
   newStore: any = {
     name: '',
     map: '',
@@ -73,8 +73,6 @@ export class StorePageComponent implements OnInit {
     { label: '10:00 PM', value: '22' },
     { label: '11:00 PM', value: '23' },
     { label: '11:59 PM', value: '24' },
-
-    // repeat for other hours of the day
   ];
   constructor(
     private storeService: StoreService,
@@ -84,11 +82,14 @@ export class StorePageComponent implements OnInit {
 
   ngOnInit() {
     this.getStores();
+
   }
 
   getStores(): void {
     this.storeService.getStores().subscribe((stores) => {
       this.stores = stores.data;
+          console.log(this.stores);
+          console.log(stores);
     });
   }
 
@@ -159,6 +160,21 @@ export class StorePageComponent implements OnInit {
   }
 
   hideDialogToEdit(): void {
+    this.store = {
+      name: '',
+      map: '',
+      location: '',
+      phone: '',
+      workingHours: [
+        { day: 'Monday', startHour: 0, endHour: 0 },
+        { day: 'Tuesday', startHour: 0, endHour: 0 },
+        { day: 'Wednesday', startHour: 0, endHour: 0 },
+        { day: 'Thursday', startHour: 0, endHour: 0 },
+        { day: 'Friday', startHour: 0, endHour: 0 },
+        { day: 'Saturday', startHour: 0, endHour: 0 },
+        { day: 'Sunday', startHour: 0, endHour: 0 },
+      ],
+    };
     this.displayDialog = false;
   }
 
@@ -168,7 +184,6 @@ export class StorePageComponent implements OnInit {
       accept: () => {
         this.storeService.softDeleteStore(id).subscribe(() => {
           this.getStores();
-          this.selectedStore = null;
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
@@ -179,20 +194,9 @@ export class StorePageComponent implements OnInit {
     });
   }
 
-  onRowSelect(event: any): void {
-    this.displayDialog = true;
-  }
-
   hideAddStoreDialog(): void {
     this.displayAddStoreDialog = false;
     this.isNewStore = false;
-    this.newStore = {
-      name: '',
-      map: '',
-      location: '',
-      phone: '',
-      workingHours: [],
-    };
     this.heroImageFile = null;
     this.pageImageFile = null;
   }
@@ -219,14 +223,14 @@ export class StorePageComponent implements OnInit {
     this.pageImageFile = null;
   }
   onHeroImageChange(event: any) {
-    if (event.target.files && event.target.files.length) {
-      this.heroImageFile = event.target.files[0];
+    if (event.currentFiles && event.currentFiles.length) {
+      this.heroImageFile = event.currentFiles[0];
     }
   }
 
   onPageImageChange(event: any) {
-    if (event.target.files && event.target.files.length) {
-      this.pageImageFile = event.target.files[0];
+    if (event.currentFiles && event.currentFiles.length) {
+      this.pageImageFile = event.currentFiles[0];
     }
   }
 }

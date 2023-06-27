@@ -1,0 +1,168 @@
+<p-messages></p-messages>
+<p-confirmDialog></p-confirmDialog>
+
+<button
+  pButton
+  type="button"
+  label="Add Category"
+  (click)="showAddCategoryDialog()"
+  class="mb-3"
+></button>
+<p-dialog
+  header="Add Category"
+  [(visible)]="displayAddCategoryDialog"
+  [responsive]="true"
+  [modal]="true"
+  [style]="{ width: '600px' }"
+  [baseZIndex]="10000"
+>
+  <div class="p-fluid">
+    <div class="p-field mb-3">
+      <label for="name">Name</label>
+      <input id="name" type="text" pInputText [(ngModel)]="newCategory.name" />
+    </div>
+    <div class="p-field mb-3">
+      <label for="description">Description</label>
+      <textarea
+        id="description"
+        type="text"
+        pInputTextarea
+        [(ngModel)]="newCategory.description"
+        style="resize: none"
+      ></textarea>
+    </div>
+  </div>
+  <div class="p-field mb-3">
+    <label for="pageImage">Page Image</label>
+    <p-fileUpload
+      name="categoryImage"
+      accept="image/*"
+      (onSelect)="onCategoryImageChange($event)"
+      chooseLabel="Select Image"
+      cancelIcon="Cancel"
+      [showUploadButton]="false"
+    ></p-fileUpload>
+  </div>
+  <div class="p-dialog-footer">
+    <button
+      pButton
+      type="button"
+      label="Cancel"
+      class="p-button-secondary"
+      (click)="hideAddCategoryDialog()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Save"
+      class="p-button-primary"
+      (click)="createCategory()"
+    ></button>
+  </div>
+</p-dialog>
+<p-table
+  [value]="this.categories"
+  [paginator]="true"
+  [rows]="12"
+  [responsive]="true"
+  [selectionMode]="'single'"
+  responsiveLayout="scroll"
+  [rowsPerPageOptions]="[12, 24, 36]"
+  [rowHover]="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Image</th>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Actions</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-category>
+    <tr>
+
+      <td style="width: 24%; min-width: 10rem">
+        <img
+          [src]="category.picture"
+          [alt]="category.name"
+          width="100"
+          class="shadow-4"
+          />
+        </td>
+        <td style="width: 24%; min-width: 10rem">{{ category.name }}</td>
+      <td style="width: 38%; min-width: 14rem">{{ category.description }}</td>
+
+      <td style="width: 14%; min-width: 10rem">
+        <button
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-pencil"
+          class="p-button-rounded p-button-success mr-2"
+          (click)="this.showDialogToEdit(category)"
+        ></button>
+        <button
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-trash"
+          class="p-button-rounded p-button-danger"
+          (click)="this.softDeleteCategory(category._id)"
+        ></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+<p-dialog
+  header="Edit Category"
+  [(visible)]="displayEditCategoryDialog"
+  [responsive]="true"
+  [modal]="true"
+  [style]="{ width: '600px' }"
+  [baseZIndex]="10000"
+>
+  <div class="p-fluid">
+    <div class="p-field mb-3">
+      <label for="name">Name</label>
+      <input id="name" type="text" pInputText [(ngModel)]="category.name" />
+    </div>
+    <div class="p-field mb-3">
+      <label for="description">Description</label>
+      <textarea
+        id="description"
+        type="text"
+        pInputTextarea
+        [(ngModel)]="category.description"
+        style="resize: none"
+      ></textarea>
+    </div>
+  </div>
+  <div class="p-field mb-3">
+    <label for="pageImage">Page Image</label>
+    <p-fileUpload
+      name="categoryImage"
+      accept="image/*"
+      (onSelect)="onCategoryImageChange($event)"
+      chooseLabel="Select Image"
+      cancelIcon="Cancel"
+      [showUploadButton]="false"
+    ></p-fileUpload>
+  </div>
+  <div class="p-dialog-footer">
+    <button
+      pButton
+      type="button"
+      label="Cancel"
+      class="p-button-secondary"
+      (click)="hideDialogToEdit()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Save"
+      class="p-button-primary"
+      (click)="updateCategory()"
+    ></button>
+  </div>
+</p-dialog>

@@ -1,1 +1,304 @@
-<p>products-page works!</p>
+<p-messages></p-messages>
+<p-confirmDialog></p-confirmDialog>
+
+<button
+  pButton
+  type="button"
+  label="Add Product"
+  (click)="showAddProductDialog()"
+  class="mb-3"
+></button>        <p-dropdown
+          id="categories"
+          [options]="currentCategories"
+          (onChange)="loadProducts()"
+          [(ngModel)]="current"
+          name="categories"
+          [style]="{ width: '100%' }"
+        ></p-dropdown>
+<p-dialog
+  header="Add Product"
+  [(visible)]="displayAddProductDialog"
+  [responsive]="true"
+  [modal]="true"
+  [style]="{ width: '800px' }"
+  [baseZIndex]="10000"
+>
+  <div class="p-fluid">
+    <div class="p-field mb-3">
+      <label for="name">Name</label>
+      <input id="name" type="text" pInputText [(ngModel)]="newProduct.name" />
+    </div>
+  </div>
+  <div class="p-fluid mb-3">
+    <label for="productPrice">Price (USD)</label>
+    <p-inputNumber
+      id="productPrice"
+      name="productPrice"
+      [min]="0.01"
+      [step]="0.01"
+      [(ngModel)]="newProduct.price"
+      mode="currency"
+      currency="USD"
+      locale="en-US"
+      placeholder="Enter price"
+    ></p-inputNumber>
+  </div>
+  <div class="p-fluid mb-3">
+    <label for="productPrice">Size</label>
+    <p-dropdown
+      id="mondayStart"
+      [options]="sizes"
+      [(ngModel)]="newProduct.size"
+      name="size"
+    ></p-dropdown>
+  </div>
+  <div class="p-field mb-3">
+    <label for="details">Details</label>
+
+    <div class="p-col-12 p-md-6">
+      <label for="brief">Brief</label>
+      <div class="p-inputgroup">
+        <input
+          id="brief"
+          type="text"
+          pInputText
+          [(ngModel)]="newProduct.details.brief"
+        />
+      </div>
+    </div>
+    <div class="p-col-12 p-md-6">
+      <label for="nutrition">Nutrition</label>
+      <div class="p-inputgroup">
+        <input
+          id="nutrition"
+          type="text"
+          pInputText
+          [(ngModel)]="newProduct.details.nutrition"
+        />
+      </div>
+    </div>
+    <div class="p-col-12 p-md-6">
+      <label for="ingredients">Ingredients</label>
+      <div class="p-inputgroup">
+        <input
+          id="ingredients"
+          type="text"
+          pInputText
+          [(ngModel)]="newProduct.details.ingredients"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="p-fluid mb-3">
+    <label for="productPrice">Category</label>
+    <p-dropdown
+      id="categories"
+      [options]="categories"
+      [(ngModel)]="newProduct.category"
+      name="categories"
+    ></p-dropdown>
+  </div>
+  <div class="p-field mb-3">
+    <label for="productImage">Product Image</label>
+    <p-fileUpload
+      name="productImage"
+      accept="image/*"
+      (onSelect)="onProductImageChange($event)"
+      chooseLabel="Select Image"
+      cancelIcon="Cancel"
+      [showUploadButton]="false"
+    ></p-fileUpload>
+  </div>
+  <div class="p-dialog-footer">
+    <button
+      pButton
+      type="button"
+      label="Cancel"
+      class="p-button-secondary"
+      (click)="hideAddProductDialog()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Save"
+      class="p-button-primary"
+      (click)="createProduct()"
+    ></button>
+  </div>
+</p-dialog>
+<p-table
+  [value]="this.products"
+  [paginator]="true"
+  [rows]="12"
+  [responsive]="true"
+  [selectionMode]="'single'"
+  responsiveLayout="scroll"
+  [rowsPerPageOptions]="[12, 24, 36]"
+  [rowHover]="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+>
+  <ng-template pTemplate="header">
+
+    <tr>
+      <th>Image</th>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Size</th>
+      <th>Category</th>
+      <th>Details</th>
+      <th>Actions</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-product>
+    <tr>
+      <td style="width: 14%; min-width: 10rem">
+        <img
+          [src]="product.picture"
+          [alt]="product.name"
+          width="100"
+          class="shadow-4"
+        />
+      </td>
+      <td style="width: 14%; min-width: 10rem">{{ product.name }}</td>
+      <td style="width: 10%; min-width: 8rem">
+        {{ product.price | currency : "USD" }}
+      </td>
+      <td style="width: 10%; min-width: 8rem">
+        {{
+          product.size === "M"
+            ? "Medium"
+            : product.size === "L"
+            ? "Large"
+            : "Small"
+        }}
+      </td>
+      <td style="width: 10%; min-width: 8rem">
+        {{ product.category.name }}
+      </td>
+      <td style="width: 28%; min-width: 12rem">
+        <p>
+          <span style="font-weight: bold">Brief: </span
+          >{{ product.details.brief }}
+        </p>
+        <p>
+          <span style="font-weight: bold">Ingredients: </span
+          >{{ product.details.ingredients }}
+        </p>
+        <p>
+          <span style="font-weight: bold">Nutrition: </span
+          >{{ product.details.nutrition | json }}
+        </p>
+      </td>
+
+      <td style="width: 10%; min-width: 10rem">
+        <button
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-pencil"
+          class="p-button-rounded p-button-success mr-2"
+          (click)="this.showEditProductDialog(product)"
+        ></button>
+        <button
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-trash"
+          class="p-button-rounded p-button-danger"
+          (click)="this.softDeleteProduct(product._id)"
+        ></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+<p-dialog
+  header="Add Product"
+  [(visible)]="displayEditProductDialog"
+  [responsive]="true"
+  [modal]="true"
+  [style]="{ width: '800px' }"
+  [baseZIndex]="10000"
+>
+  <div class="p-fluid">
+    <div class="p-field mb-3">
+      <label for="name">Name</label>
+      <input id="name" type="text" pInputText [(ngModel)]="product.name" />
+    </div>
+  </div>
+  <div class="p-fluid mb-3">
+    <label for="productPrice">Price (USD)</label>
+    <p-inputNumber
+      id="productPrice"
+      name="productPrice"
+      [min]="0.01"
+      [step]="0.01"
+      [(ngModel)]="product.price"
+      mode="currency"
+      currency="USD"
+      locale="en-US"
+      placeholder="Enter price"
+    ></p-inputNumber>
+  </div>
+  <div class="p-fluid mb-3">
+    <label for="productPrice">Size</label>
+    <p-dropdown
+      id="mondayStart"
+      [options]="sizes"
+      [(ngModel)]="product.size"
+      name="size"
+    ></p-dropdown>
+  </div>
+  <div class="p-field mb-3">
+    <label for="details">Details</label>
+
+    <div class="p-col-12 p-md-6">
+      <label for="brief">Brief</label>
+      <div class="p-inputgroup">
+        <input
+          id="brief"
+          type="text"
+          pInputText
+          [(ngModel)]="product.details.brief"
+        />
+      </div>
+    </div>
+    <div class="p-col-12 p-md-6">
+      <label for="ingredients">Ingredients</label>
+      <div class="p-inputgroup">
+        <input
+          id="ingredients"
+          type="text"
+          pInputText
+          [(ngModel)]="product.details.ingredients"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="p-field mb-3">
+    <label for="productImage">Product Image</label>
+    <p-fileUpload
+      name="productImage"
+      accept="image/*"
+      (onSelect)="onProductImageChange($event)"
+      chooseLabel="Select Image"
+      cancelIcon="Cancel"
+      [showUploadButton]="false"
+    ></p-fileUpload>
+  </div>
+  <div class="p-dialog-footer">
+    <button
+      pButton
+      type="button"
+      label="Cancel"
+      class="p-button-secondary"
+      (click)="hideEditProductDialog()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Save"
+      class="p-button-primary"
+      (click)="updateProduct()"
+    ></button>
+  </div>
+</p-dialog>

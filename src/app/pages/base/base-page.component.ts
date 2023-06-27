@@ -3,9 +3,9 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-customers-page',
-  templateUrl: './customers-page.component.html',
-  styleUrls: ['./customers-page.component.scss'],
+  selector: 'app-base-page',
+  templateUrl: './base-page.component.html',
+  styleUrls: ['./base-page.component.scss'],
   providers: [ConfirmationService, MessageService],
 })
-export class CustomersPageComponent {}
+export class BasePageComponent {}
