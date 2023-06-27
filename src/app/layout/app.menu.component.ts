@@ -70,14 +70,19 @@ export class AppMenuComponent implements OnInit {
           label: 'Adminstration',
           items: [
             {
-              label: 'Products',
-              icon: 'pi pi-fw pi-list',
-              routerLink: ['/products'],
-            },
-            {
               label: 'Stores',
               icon: 'pi pi-fw pi-home',
               routerLink: ['/store'],
+            },
+            {
+              label: 'Admins',
+              icon: 'pi pi-fw pi-user-plus',
+              routerLink: ['/admins'],
+            },
+            {
+              label: 'Customers',
+              icon: 'pi pi-fw pi-users',
+              routerLink: ['/customers'],
             },
             {
               label: 'Orders',
@@ -85,9 +90,44 @@ export class AppMenuComponent implements OnInit {
               routerLink: ['/orders'],
             },
             {
-              label: 'Admins',
-              icon: 'pi pi-fw pi-user-plus',
-              routerLink: ['/admins'],
+              label: 'Vouchers',
+              icon: 'pi pi-fw pi-ticket',
+              routerLink: ['/vouchers'],
+            },
+          ],
+        },
+        {
+          label: 'Products',
+          items: [
+            {
+              label: 'Categories',
+              icon: 'pi pi-fw pi-th-large',
+              routerLink: ['/categories'],
+            },
+            {
+              label: 'Products',
+              icon: 'pi pi-fw pi-list',
+              routerLink: ['/products'],
+            },
+            {
+              label: 'Bases',
+              icon: 'pi pi-fw pi-minus',
+              routerLink: ['/bases'],
+            },
+            {
+              label: 'Flavors',
+              icon: 'pi pi-fw pi-angle-up',
+              routerLink: ['/flavors'],
+            },
+            {
+              label: 'Toppings',
+              icon: 'pi pi-fw pi-caret-up',
+              routerLink: ['/toppings'],
+            },
+            {
+              label: 'Topping types',
+              icon: 'pi pi-fw pi-forward',
+              routerLink: ['/topping-types'],
             },
           ],
         },

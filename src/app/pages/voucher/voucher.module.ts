@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProductsPageComponent } from './products-page.component';
+import { VoucherPageComponent } from './voucher-page.component';
 import { RouterModule, Routes } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import { TableModule } from 'primeng/table';
@@ -13,17 +13,16 @@ import { MessageService } from 'primeng/api';
 import { MessagesModule } from 'primeng/messages';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { FileUploadModule } from 'primeng/fileupload';
-import { InputNumberModule } from 'primeng/inputnumber';
 
 const routes: Routes = [
   {
     path: '',
-    component: ProductsPageComponent,
+    component: VoucherPageComponent,
   },
 ];
 
 @NgModule({
-  declarations: [ProductsPageComponent],
+  declarations: [VoucherPageComponent],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
@@ -36,7 +35,6 @@ const routes: Routes = [
     MessagesModule,
     ConfirmDialogModule,
     FileUploadModule,
-    InputNumberModule,
   ],
 })
-export class ProductsModule {}
+export class VoucherModule {}

@@ -59,6 +59,62 @@ const routes: Routes = [
             (m) => m.AdminsModule
           ),
       },
+      {
+        path: 'vouchers',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/voucher/voucher.module').then(
+            (m) => m.VoucherModule
+          ),
+      },
+      {
+        path: 'categories',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/category/category.module').then(
+            (m) => m.CategoryModule
+          ),
+      },
+      {
+        path: 'products',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/products/products.module').then(
+            (m) => m.ProductsModule
+          ),
+      },
+      {
+        path: 'bases',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/base/base.module').then(
+            (m) => m.BaseModule
+          ),
+      },
+      {
+        path: 'flavors',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/flavor/flavor.module').then(
+            (m) => m.FlavorModule
+          ),
+      },
+      {
+        path: 'toppings',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/topping/topping.module').then(
+            (m) => m.ToppingModule
+          ),
+      },
+      {
+        path: 'topping-types',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/topping-type/topping-type.module').then(
+            (m) => m.ToppingTypeModule
+          ),
+      },
     ],
   },
   {

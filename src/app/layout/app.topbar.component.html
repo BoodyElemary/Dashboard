@@ -1,7 +1,7 @@
 <div class="layout-topbar">
   <a class="layout-topbar-logo" routerLink="">
     <img src="assets/layout/images/Logo.webp" alt="logo" />
-    <span>Bobazona<span *ngIf="loginService.getRole()==='admin'"> Branch Name</span></span>
+    <span ><span style="font-weight: bold;">Bobazona</span><span *ngIf="loginService.getRole()==='admin'"> {{this.loginService.getStore()}}</span></span>
   </a>
 
   <button
