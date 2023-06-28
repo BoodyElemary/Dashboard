@@ -1,2 +1,189 @@
-  <p-messages></p-messages>
+<p-messages></p-messages>
 <p-confirmDialog></p-confirmDialog>
+<button
+  pButton
+  type="button"
+  label="Add Category"
+  (click)="showAddVoucherDialog()"
+  class="mb-3"
+></button>
+<p-dialog
+  header="Add Category"
+  [(visible)]="displayAddVoucherDialog"
+  [responsive]="true"
+  [modal]="true"
+  [style]="{ width: '400px' }"
+  [baseZIndex]="10000"
+>
+  <div class="p-fluid">
+    <div class="p-field mb-3">
+      <label for="name">code</label>
+      <input id="name" type="text" pInputText [(ngModel)]="newVoucher.code" />
+    </div>
+    <div class="p-field mb-3">
+      <label for="percentage">Percentage</label>
+      <p-inputNumber
+        id="percentage"
+        name="percentage"
+        [min]="0.01"
+        [max]="100"
+        [step]="0.01"
+        [(ngModel)]="newVoucher.percentage"
+        mode="decimal"
+        placeholder="Enter percentage"
+      ></p-inputNumber>
+    </div>
+    <div class="p-field mb-3">
+      <label for="expireDate">Expire Date:</label>
+      <input
+        id="expireDate"
+        type="date"
+        pInputText
+        [(ngModel)]="newVoucher.expireDate"
+        [min]="minExpireDate"
+      />
+    </div>
+    <div class="p-field mb-3">
+      <label for="status">Status:</label>
+      <select id="status" pInputText [(ngModel)]="newVoucher.status">
+        <option value="applied">Applied</option>
+        <option value="expired">Expired</option>
+      </select>
+    </div>
+  </div>
+  <div class="p-dialog-footer">
+    <button
+      pButton
+      type="button"
+      label="Cancel"
+      class="p-button-secondary"
+      (click)="hideAddVoucherDialog()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Save"
+      class="p-button-primary"
+      (click)="createVoucher()"
+    ></button>
+  </div>
+</p-dialog>
+
+<p-table
+  [value]="this.vouchers"
+  [paginator]="true"
+  [rows]="12"
+  [responsive]="true"
+  [selectionMode]="'single'"
+  responsiveLayout="scroll"
+  [rowsPerPageOptions]="[12, 24, 36]"
+  [rowHover]="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Code</th>
+      <th>Percentage</th>
+      <th>Expire Date</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-voucher>
+    <tr>
+      <td style="width: 20%; min-width: 8rem">{{ voucher.code }}</td>
+      <td style="width: 20%; min-width: 8rem">
+        {{ voucher.percentage / 100 | percent : "1.2-2" }}
+      </td>
+      <td style="width: 24%; min-width: 14rem">
+        {{ voucher.expireDate | date : "dd/ MM/ yyyy" }}
+      </td>
+      <td style="width: 20%; min-width: 8rem">
+        <span [class]="'product-badge status-' + voucher.status">{{
+          voucher.status
+        }}</span>
+      </td>
+
+      <td style="width: 14%; min-width: 10rem">
+        <button
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-pencil"
+          class="p-button-rounded p-button-success mr-2"
+          (click)="this.showDialogToEdit(voucher)"
+        ></button>
+        <button
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-trash"
+          class="p-button-rounded p-button-danger"
+          (click)="this.deleteVoucher(voucher._id)"
+        ></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-dialog
+  header="Edit Category"
+  [(visible)]="displayEditVoucherDialog"
+  [responsive]="true"
+  [modal]="true"
+  [style]="{ width: '400px' }"
+  [baseZIndex]="10000"
+>
+  <div class="p-fluid">
+    <div class="p-field mb-3">
+      <label for="name">code</label>
+      <input id="name" type="text" pInputText [(ngModel)]="voucher.code" />
+    </div>
+    <div class="p-field mb-3">
+      <label for="percentage">Percentage</label>
+      <p-inputNumber
+        id="percentage"
+        name="percentage"
+        [min]="0.01"
+        [max]="100"
+        [step]="0.01"
+        [(ngModel)]="voucher.percentage"
+        mode="decimal"
+        placeholder="Enter percentage"
+      ></p-inputNumber>
+    </div>
+    <div class="p-field mb-3">
+      <label for="expireDate">Expire Date:</label>
+      <input
+        id="expireDate"
+        type="date"
+        pInputText
+        [(ngModel)]="voucher.expireDate"
+        [min]="minExpireDate"
+      />
+    </div>
+    <div class="p-field mb-3">
+      <label for="status">Status:</label>
+      <select id="status" pInputText [(ngModel)]="voucher.status">
+        <option value="applied">Applied</option>
+        <option value="expired">Expired</option>
+      </select>
+    </div>
+  </div>
+  <div class="p-dialog-footer">
+    <button
+      pButton
+      type="button"
+      label="Cancel"
+      class="p-button-secondary"
+      (click)="hideDialogToEdit()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Save"
+      class="p-button-primary"
+      (click)="updateVoucher()"
+    ></button>
+  </div>
+</p-dialog>

@@ -82,14 +82,13 @@ export class StorePageComponent implements OnInit {
 
   ngOnInit() {
     this.getStores();
-
   }
 
   getStores(): void {
     this.storeService.getStores().subscribe((stores) => {
       this.stores = stores.data;
-          console.log(this.stores);
-          console.log(stores);
+      console.log(this.stores);
+      console.log(stores);
     });
   }
 
@@ -124,30 +123,40 @@ export class StorePageComponent implements OnInit {
     } else {
       this.storeService
         .createStore(this.newStore, this.heroImageFile, this.pageImageFile)
-        .subscribe(() => {
-          this.getStores();
-          this.newStore = {
-            name: '',
-            map: '',
-            location: '',
-            phone: '',
-            workingHours: [
-              { day: 'Monday', startHour: 0, endHour: 0 },
-              { day: 'Tuesday', startHour: 0, endHour: 0 },
-              { day: 'Wednesday', startHour: 0, endHour: 0 },
-              { day: 'Thursday', startHour: 0, endHour: 0 },
-              { day: 'Friday', startHour: 0, endHour: 0 },
-              { day: 'Saturday', startHour: 0, endHour: 0 },
-              { day: 'Sunday', startHour: 0, endHour: 0 },
-            ],
-          };
-          this.displayAddStoreDialog = false;
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Store created successfully',
-          });
-        });
+        .subscribe(
+          () => {
+            this.getStores();
+            this.newStore = {
+              name: '',
+              map: '',
+              location: '',
+              phone: '',
+              workingHours: [
+                { day: 'Monday', startHour: 0, endHour: 0 },
+                { day: 'Tuesday', startHour: 0, endHour: 0 },
+                { day: 'Wednesday', startHour: 0, endHour: 0 },
+                { day: 'Thursday', startHour: 0, endHour: 0 },
+                { day: 'Friday', startHour: 0, endHour: 0 },
+                { day: 'Saturday', startHour: 0, endHour: 0 },
+                { day: 'Sunday', startHour: 0, endHour: 0 },
+              ],
+            };
+            this.displayAddStoreDialog = false;
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Store created successfully',
+            });
+          },
+          (error) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: error.statusText,
+            });
+            console.log(error);
+          }
+        );
     }
   }
 
@@ -182,15 +191,26 @@ export class StorePageComponent implements OnInit {
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this store?',
       accept: () => {
-        this.storeService.softDeleteStore(id).subscribe(() => {
-          this.getStores();
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Store deleted successfully',
-          });
-        });
+        this.storeService.softDeleteStore(id).subscribe(
+          () => {
+            this.getStores();
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Store deleted successfully',
+            });
+          },
+          (error) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: error.statusText,
+            });
+            console.log(error);
+          }
+        );
       },
+
     });
   }
 
