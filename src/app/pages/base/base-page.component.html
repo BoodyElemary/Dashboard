@@ -1,2 +1,187 @@
-  <p-messages></p-messages>
+<p-messages></p-messages>
 <p-confirmDialog></p-confirmDialog>
+
+<button
+  pButton
+  type="button"
+  label="Add Base"
+  (click)="showAddBaseDialog()"
+  class="mb-3"
+></button>
+
+<p-dialog
+  header="Add Base"
+  [(visible)]="displayAddBaseDialog"
+  [responsive]="true"
+  [modal]="true"
+  [style]="{ width: '600px' }"
+  [baseZIndex]="10000"
+>
+  <div class="p-fluid">
+    <div class="p-field mb-3">
+      <label for="name">Name</label>
+      <input id="name" type="text" pInputText [(ngModel)]="newBase.name" />
+    </div>
+  </div>
+  <div class="p-fluid mb-3">
+    <label for="productPrice">Price (USD)</label>
+    <p-inputNumber
+      id="productPrice"
+      name="productPrice"
+      [min]="0.01"
+      [step]="0.01"
+      [(ngModel)]="newBase.price"
+      mode="currency"
+      currency="USD"
+      locale="en-US"
+      placeholder="Enter price"
+    ></p-inputNumber>
+  </div>
+
+
+  <div class="p-field mb-3">
+    <label for="productImage">Base Image</label>
+    <p-fileUpload
+      name="productImage"
+      accept="image/*"
+      (onSelect)="onBaseImageChange($event)"
+      chooseLabel="Select Image"
+      cancelIcon="Cancel"
+      [showUploadButton]="false"
+    ></p-fileUpload>
+  </div>
+  <div class="p-dialog-footer">
+    <button
+      pButton
+      type="button"
+      label="Cancel"
+      class="p-button-secondary"
+      (click)="hideAddBaseDialog()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Save"
+      class="p-button-primary"
+      (click)="createBase()"
+    ></button>
+  </div>
+</p-dialog>
+
+
+<p-table
+  [value]="this.bases"
+  [paginator]="true"
+  [rows]="12"
+  [responsive]="true"
+  [selectionMode]="'single'"
+  responsiveLayout="scroll"
+  [rowsPerPageOptions]="[12, 24, 36]"
+  [rowHover]="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Picture</th>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Actions</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-base>
+    <tr>
+      <td style="width: 14%; min-width: 10rem">
+        <img
+          [src]="base.picture"
+          [alt]="base.name"
+          width="100"
+          class="shadow-4"
+        />
+      </td>
+      <td style="width: 36%; min-width: 8rem">
+        {{ base.name }}
+      </td>
+      <td style="width: 36%; min-width: 8rem">
+        {{ base.price | currency : "USD" }}
+      </td>
+
+      <td style="width: 14%; min-width: 10rem">
+        <button
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-pencil"
+          class="p-button-rounded p-button-success mr-2"
+          (click)="this.showEditBaseDialog(base)"
+        ></button>
+        <button
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-trash"
+          class="p-button-rounded p-button-danger"
+          (click)="this.deleteBase(base._id)"
+        ></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-dialog
+  header="Edit Base"
+  [(visible)]="displayEditBaseDialog"
+  [responsive]="true"
+  [modal]="true"
+  [style]="{ width: '600px' }"
+  [baseZIndex]="10000"
+>
+  <div class="p-fluid">
+    <div class="p-field mb-3">
+      <label for="name">Name</label>
+      <input id="name" type="text" pInputText [(ngModel)]="base.name" />
+    </div>
+  </div>
+  <div class="p-fluid mb-3">
+    <label for="productPrice">Price (USD)</label>
+    <p-inputNumber
+      id="productPrice"
+      name="productPrice"
+      [min]="0.01"
+      [step]="0.01"
+      [(ngModel)]="base.price"
+      mode="currency"
+      currency="USD"
+      locale="en-US"
+      placeholder="Enter price"
+    ></p-inputNumber>
+  </div>
+
+
+  <div class="p-field mb-3">
+    <label for="productImage">Base Image</label>
+    <p-fileUpload
+      name="productImage"
+      accept="image/*"
+      (onSelect)="onBaseImageChange($event)"
+      chooseLabel="Select Image"
+      cancelIcon="Cancel"
+      [showUploadButton]="false"
+    ></p-fileUpload>
+  </div>
+  <div class="p-dialog-footer">
+    <button
+      pButton
+      type="button"
+      label="Cancel"
+      class="p-button-secondary"
+      (click)="hideEditBaseDialog()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Save"
+      class="p-button-primary"
+      (click)="updateBase()"
+    ></button>
+  </div>
+</p-dialog>

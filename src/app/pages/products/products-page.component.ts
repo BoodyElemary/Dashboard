@@ -20,7 +20,7 @@ export class ProductsPageComponent implements OnInit {
   imageFile: File | null = null;
   newProduct: any = {
     name: '',
-    price: 0,
+    price: 0.01,
     size: 'S',
     details: { brief: '', nutrition: '', ingredients: '' },
     category: '',
@@ -32,7 +32,7 @@ export class ProductsPageComponent implements OnInit {
   ];
   product: any = {
     name: '',
-    price: 0,
+    price: 0.01,
     size: 'S',
     details: { brief: '', nutrition: '', ingredients: '' },
   };
@@ -43,13 +43,14 @@ export class ProductsPageComponent implements OnInit {
     private router: Router,
     private productService: ProductService,
     private categoryService: CategoryService,
+    private confirmationService: ConfirmationService,
     private messageService: MessageService
   ) {}
 
   showAddProductDialog() {
     this.newProduct = {
       name: '',
-      price: 0,
+      price: 0.01,
       size: 'S',
       details: { brief: '', nutrition: '', ingredients: '' },
       category: '',
@@ -61,7 +62,7 @@ export class ProductsPageComponent implements OnInit {
   hideAddProductDialog() {
     this.newProduct = {
       name: '',
-      price: 0,
+      price: 0.01,
       size: 'S',
       details: { brief: '', nutrition: '', ingredients: '' },
       category: '',
@@ -77,13 +78,6 @@ export class ProductsPageComponent implements OnInit {
   }
 
   hideEditProductDialog() {
-    this.newProduct = {
-      name: '',
-      price: 0,
-      size: 'S',
-      details: { brief: '', nutrition: '', ingredients: '' },
-      category: '',
-    };
     this.imageFile = null;
     this.displayEditProductDialog = false;
   }
@@ -218,65 +212,75 @@ export class ProductsPageComponent implements OnInit {
   }
 
   softDeleteProduct(id: string) {
-    this.productService.softDeleteProduct(id).subscribe(
-      (data) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'Product deleted successfully',
-        });
-        console.log(data);
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete this product?',
+      accept: () => {
+        this.productService.softDeleteProduct(id).subscribe(
+          (data) => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Product deleted successfully',
+            });
+            console.log(data);
+          },
+          (error) => {
+            if (error.status === 409) {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Already logged in from another device!',
+              });
+              setInterval(() => {
+                this.router.navigate(['/login']);
+              }, 2000);
+            }
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Error deleting product!',
+            });
+            console.log(error);
+          }
+        );
       },
-      (error) => {
-        if (error.status === 409) {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Already logged in from another device!',
-          });
-          setInterval(() => {
-            this.router.navigate(['/login']);
-          }, 2000);
-        }
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error deleting product!',
-        });
-        console.log(error);
-      }
-    );
+    });
   }
 
   hardDeleteProduct(id: string) {
-    this.productService.hardDeleteProduct(id).subscribe(
-      (data) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'Product deleted successfully',
-        });
-        console.log(data);
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete this product?',
+      accept: () => {
+        this.productService.hardDeleteProduct(id).subscribe(
+          (data) => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Product deleted successfully',
+            });
+            console.log(data);
+          },
+          (error) => {
+            if (error.status === 409) {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Already logged in from another device!',
+              });
+              setInterval(() => {
+                this.router.navigate(['/login']);
+              }, 2000);
+            }
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Error deleting product!',
+            });
+            console.log(error);
+          }
+        );
       },
-      (error) => {
-        if (error.status === 409) {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Already logged in from another device!',
-          });
-          setInterval(() => {
-            this.router.navigate(['/login']);
-          }, 2000);
-        }
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error deleting product!',
-        });
-        console.log(error);
-      }
-    );
+    });
   }
 
   onProductImageChange(event: any) {

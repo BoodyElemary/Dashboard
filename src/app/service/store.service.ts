@@ -38,11 +38,10 @@ export class StoreService {
     formData.append('map', store.map);
     formData.append('location', store.location);
     formData.append('phone', store.phone);
-    formData.append('workingHours', store.workingHours);
+    // formData.append('workingHours', store.workingHours);//ToDo
     if (heroImageFile) formData.append('heroImage', heroImageFile, heroImageFile.name);
     if (pageImageFile) formData.append('pageImage', pageImageFile, pageImageFile.name);
-    // formData.append('heroImage', store.heroImage);
-    // formData.append('pageImage', store.pageImage);
+    console.log(store);
     return this.http.post<any>(this.storesUrl, formData, { headers });
   }
 
@@ -59,9 +58,7 @@ export class StoreService {
     if (store.map) formData.append('map', store.map);
     if (store.location) formData.append('location', store.location);
     if (store.phone) formData.append('phone', store.phone);
-    if (store.workingHours) formData.append('workingHours', store.workingHours);
-    // if (store.heroImage) formData.append('heroImage', store.heroImage);
-    // if (store.pageImage) formData.append('pageImage', store.pageImage);
+    // if (store.workingHours) formData.append('workingHours', store.workingHours); //ToDo
     if (pageImageFile) formData.append('pageImage', pageImageFile, pageImageFile.name);
     if (heroImageFile) formData.append('heroImage', heroImageFile, heroImageFile.name);
 
