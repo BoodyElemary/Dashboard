@@ -55,17 +55,13 @@ const routes: Routes = [
         path: 'admins',
         pathMatch: 'full',
         loadChildren: () =>
-          import('./pages/admins/admins.module').then(
-            (m) => m.AdminsModule
-          ),
+          import('./pages/admins/admins.module').then((m) => m.AdminsModule),
       },
       {
         path: 'vouchers',
         pathMatch: 'full',
         loadChildren: () =>
-          import('./pages/voucher/voucher.module').then(
-            (m) => m.VoucherModule
-          ),
+          import('./pages/voucher/voucher.module').then((m) => m.VoucherModule),
       },
       {
         path: 'categories',
@@ -87,25 +83,19 @@ const routes: Routes = [
         path: 'bases',
         pathMatch: 'full',
         loadChildren: () =>
-          import('./pages/base/base.module').then(
-            (m) => m.BaseModule
-          ),
+          import('./pages/base/base.module').then((m) => m.BaseModule),
       },
       {
         path: 'flavors',
         pathMatch: 'full',
         loadChildren: () =>
-          import('./pages/flavor/flavor.module').then(
-            (m) => m.FlavorModule
-          ),
+          import('./pages/flavor/flavor.module').then((m) => m.FlavorModule),
       },
       {
         path: 'toppings',
         pathMatch: 'full',
         loadChildren: () =>
-          import('./pages/topping/topping.module').then(
-            (m) => m.ToppingModule
-          ),
+          import('./pages/topping/topping.module').then((m) => m.ToppingModule),
       },
       {
         path: 'topping-types',
@@ -113,6 +103,22 @@ const routes: Routes = [
         loadChildren: () =>
           import('./pages/topping-type/topping-type.module').then(
             (m) => m.ToppingTypeModule
+          ),
+      },
+      {
+        path: 'profile',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/admin-profile/admin-profile.module').then(
+            (m) => m.AdminProfileModule
+          ),
+      },
+      {
+        path: 'adminStore',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/admin-store/admin-store.module').then(
+            (m) => m.AdminStoreModule
           ),
       },
     ],
