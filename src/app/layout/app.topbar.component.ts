@@ -16,8 +16,10 @@ export class AppTopBarComponent {
 
   @ViewChild('topbarmenu') menu!: ElementRef;
 
+  storeName: string = '';
+
   constructor(
     public layoutService: LayoutService,
-    public loginService: LoginService,
+    public loginService: LoginService
   ) {}
 }

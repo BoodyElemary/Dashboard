@@ -1,11 +1,16 @@
 <div class="layout-topbar">
   <a class="layout-topbar-logo" routerLink="">
     <img src="assets/layout/images/Logo.webp" alt="logo" />
-    <span ><span style="font-weight: bold;">Bobazona</span><span *ngIf="loginService.getRole()==='admin'"> {{this.loginService.getStore()}}</span></span>
+    <span
+      ><span style="font-weight: bold">Bobazona</span
+      ><span *ngIf="loginService.getRole() === 'admin'">
+        {{ this.loginService.getStore() }}</span
+      ></span
+    >
   </a>
 
   <button
-  *ngIf="loginService.isLogin()"
+    *ngIf="loginService.isLogin()"
     #menubutton
     class="p-link layout-menu-button layout-topbar-button"
     (click)="layoutService.onMenuToggle()"
@@ -29,11 +34,15 @@
         layoutService.state.profileSidebarVisible
     }"
   >
-    <button  class="p-link layout-topbar-button">
+    <button class="p-link layout-topbar-button">
       <i class="pi pi-calendar"></i>
       <span>Calendar</span>
     </button>
-    <button *ngIf="loginService.isLogin()" class="p-link layout-topbar-button">
+    <button
+      *ngIf="loginService.isLogin()"
+      class="p-link layout-topbar-button"
+      routerLink="/profile"
+    >
       <i class="pi pi-user"></i>
       <span>Profile</span>
     </button>

@@ -1,0 +1,66 @@
+<div class="grid flex-column justify-content-center align-items-center">
+  <h1 class="lg:col-6">profile info:</h1>
+  <p-card
+    header="full Name: {{ fullName }}"
+    subheader="admin Id: {{ id }}"
+    class="lg:col-6 col-12"
+  >
+    <ng-template pTemplate="header"> </ng-template>
+    <ng-template pTemplate="footer">
+      <p-button
+        label="edit"
+        icon="pi pi-check"
+        (click)="showDialog()"
+      ></p-button>
+    </ng-template>
+  </p-card>
+</div>
+<p-dialog
+  header="Admin Information"
+  [(visible)]="this.displayDialog"
+  [responsive]="true"
+  [modal]="true"
+  [style]="{ width: '400px' }"
+  [baseZIndex]="10000"
+>
+  <div class="p-fluid">
+    <div class="p-field mb-3">
+      <label for="name" class="">Full Name:</label>
+      <input id="name" type="text" class="mt-2" pInputText />
+    </div>
+    <div class="p-field mb-3">
+      <label for="password">Password:</label>
+      <!-- <input id="password" class="mt-2" type="password" pInputText /> -->
+      <div class="p-inputgroup">
+        <input id="password" [type]="passwordType" pInputText name="password" />
+        <button
+          pButton
+          pPassword
+          type="button"
+          icon="{{
+            passwordType === 'password' ? 'pi pi-eye-slash' : 'pi pi-eye'
+          }}"
+          (click)="
+            passwordType = passwordType === 'password' ? 'text' : 'password'
+          "
+        ></button>
+      </div>
+    </div>
+  </div>
+  <div class="p-dialog-footer mt-3">
+    <button
+      pButton
+      type="button"
+      label="Cancel"
+      class="p-button-secondary"
+      (click)="this.displayDialog = false"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Save"
+      class="p-button-primary"
+      (click)="this.saveProfile()"
+    ></button>
+  </div>
+</p-dialog>
