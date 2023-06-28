@@ -16,6 +16,7 @@ export class ProductsPageComponent implements OnInit {
   currentCategories: any[] = [];
   categories: any[] = [];
   products: any = [];
+  isLoading: boolean = false;
   imageFile: File | null = null;
   newProduct: any = {
     name: '',
@@ -93,10 +94,13 @@ export class ProductsPageComponent implements OnInit {
   }
 
   loadProducts() {
+    this.isLoading = true;
+
     if (this.current === 'all') {
       this.productService.getAllProducts().subscribe(
         (data) => {
           this.products = data.data;
+          this.isLoading = false; // Finish loading
         },
         (error) => {
           if (error.status === 409) {
@@ -116,6 +120,7 @@ export class ProductsPageComponent implements OnInit {
       this.categoryService.getCategoryProducts(this.current).subscribe(
         (data) => {
           this.products = data.data;
+          this.isLoading = false; // Finish loading
         },
         (error) => {
           if (error.status === 409) {
@@ -129,6 +134,7 @@ export class ProductsPageComponent implements OnInit {
             }, 2000);
           }
           console.log(error);
+          this.isLoading = false; // Finish loading in case of an error
         }
       );
     }
@@ -177,36 +183,38 @@ export class ProductsPageComponent implements OnInit {
   }
 
   updateProduct() {
-    this.productService.updateProduct(this.product._id, this.product, this.imageFile).subscribe(
-      (data) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'Product updated successfully',
-        });
-        this.loadProducts();
-        this.hideEditProductDialog();
-        console.log(data);
-      },
-      (error) => {
-        if (error.status === 409) {
+    this.productService
+      .updateProduct(this.product._id, this.product, this.imageFile)
+      .subscribe(
+        (data) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Product updated successfully',
+          });
+          this.loadProducts();
+          this.hideEditProductDialog();
+          console.log(data);
+        },
+        (error) => {
+          if (error.status === 409) {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Already logged in from another device!',
+            });
+            setInterval(() => {
+              this.router.navigate(['/login']);
+            }, 2000);
+          }
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
-            detail: 'Already logged in from another device!',
+            detail: 'Error editing product!',
           });
-          setInterval(() => {
-            this.router.navigate(['/login']);
-          }, 2000);
+          console.log(error);
         }
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error editing product!',
-        });
-        console.log(error);
-      }
-    );
+      );
   }
 
   softDeleteProduct(id: string) {
