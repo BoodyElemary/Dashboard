@@ -4,3 +4,31 @@ p-messages {
   opacity: 1;
   z-index: 100;
 }
+.product-badge.status-delivered {
+  background: #c8e6c9;
+  color: #256029;
+}
+.product-badge.status-cancelled {
+  background: #ffcdd2;
+  color: #c63737;
+}
+
+.product-badge.status-pending {
+  background: #feedaf;
+  color: #8a5340;
+}
+.product-badge.status-preparing {
+  background: #d4affe;
+  color: #8a408a;
+}
+
+.customer-badge,
+.product-badge,
+.order-badge {
+  border-radius: var(--border-radius);
+  padding: 0.25em 0.5rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+}

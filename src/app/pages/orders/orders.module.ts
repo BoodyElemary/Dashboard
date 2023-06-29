@@ -13,6 +13,8 @@ import { MessageService } from 'primeng/api';
 import { MessagesModule } from 'primeng/messages';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { FileUploadModule } from 'primeng/fileupload';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 const routes: Routes = [
   {
@@ -35,6 +37,9 @@ const routes: Routes = [
     MessagesModule,
     ConfirmDialogModule,
     FileUploadModule,
+    ProgressSpinnerModule,
+    InputNumberModule,
   ],
+  providers: [ConfirmationService, MessageService],
 })
 export class OrdersModule {}
