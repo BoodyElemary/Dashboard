@@ -1,12 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AppLayoutComponent } from './layout/app.layout.component';
-import { AuthGuard } from './auth.guard';
 const routes: Routes = [
   {
     path: '',
     component: AppLayoutComponent,
-    canActivate: [AuthGuard],
     data: { roles: ['admin', 'super'] },
     children: [
       {

@@ -1,2 +1,48 @@
-  <p-messages></p-messages>
-<p-confirmDialog></p-confirmDialog>
+<!-- orders-page.component.html -->
+<p-table
+  [value]="orders"
+  [responsive]="true"
+  [selectionMode]="'single'"
+  responsiveLayout="scroll"
+  [rowHover]="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+  [paginator]="true"
+  [rows]="10"
+  [lazy]="true"
+  (onLazyLoad)="loadOrdersLazy($event)"
+  [totalRecords]="totalOrders"
+  [loading]="loading"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>id</th>
+      <th>customer</th>
+      <th>arrival time</th>
+      <th>pickupTime</th>
+      <th>status</th>
+      <th>action</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-order>
+    <tr>
+      <td style="width: 14%; min-width: 10rem">{{ order._id }}</td>
+      <td style="width: 14%; min-width: 10rem">
+        {{ order?.customer?.firstName }}
+        {{ order?.customer?.lastName }}
+      </td>
+      <!-- Add other table columns for arrival time, pickup time, and status -->
+      <td style="width: 10%; min-width: 8rem">
+        {{ order.arrivalTime }}
+      </td>
+      <td style="width: 10%; min-width: 8rem">
+        {{ order.pickUpTime }}
+      </td>
+      <td style="width: 10%; min-width: 8rem">
+        {{ order.status }}
+      </td>
+      <td style="width: 10%; min-width: 8rem">
+        <button>assa</button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
