@@ -13,6 +13,8 @@ export class OrdersPageComponent {
   orders: any[] = [];
   totalOrders: number = 11;
   loading: boolean = true;
+  displayEditVoucherDialog: boolean = false;
+  orderStatus: string = '';
 
   constructor(
     private confirmationService: ConfirmationService,
@@ -35,4 +37,46 @@ export class OrdersPageComponent {
       }
     );
   }
+  showDialogToEdit(order: any) {
+    console.log(order);
+    this.orderStatus = order.status;
+    console.log(this.orderStatus);
+
+    this.displayEditVoucherDialog = true;
+  }
+
+  // updateVoucher() {
+  //   this.voucherService.updateVoucher(this.voucher._id, this.voucher).subscribe(
+  //     () => {
+  //       this.getVouchers();
+  //       this.hideDialogToEdit();
+  //       this.messageService.add({
+  //         severity: 'success',
+  //         summary: 'Success',
+  //         detail: 'Voucher updated successfully',
+  //       });
+  //     },
+  //     (error) => {
+  //       this.messageService.add({
+  //         severity: 'error',
+  //         summary: 'Error',
+  //         detail: error.statusText,
+  //       });
+  //       console.log(error);
+  //     }
+  //   );
+  // }
+
+  // hideAddVoucherDialog() {
+  //   this.displayAddVoucherDialog = false;
+  // }
+
+  // showDialogToEdit(voucher: any) {
+  //   this.voucher = voucher;
+  //   this.displayEditVoucherDialog = true;
+  // }
+  hideDialogToEdit() {
+    this.displayEditVoucherDialog = false;
+  }
+  updateStatus() {}
 }
