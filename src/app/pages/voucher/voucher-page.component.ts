@@ -40,9 +40,19 @@ export class VoucherPageComponent {
   }
 
   getVouchers() {
-    this.voucherService.getVouchers().subscribe((response: any) => {
-      this.vouchers = response.data;
-    });
+    this.voucherService.getVouchers().subscribe(
+      (data: any) => {
+        this.vouchers = data.data;
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error.statusText,
+        });
+        console.log(error);
+      }
+    );
   }
 
   createVoucher() {

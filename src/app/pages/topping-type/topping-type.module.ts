@@ -13,6 +13,7 @@ import { MessageService } from 'primeng/api';
 import { MessagesModule } from 'primeng/messages';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { FileUploadModule } from 'primeng/fileupload';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 const routes: Routes = [
   {
@@ -35,6 +36,7 @@ const routes: Routes = [
     MessagesModule,
     ConfirmDialogModule,
     FileUploadModule,
+    InputNumberModule,
   ],
 })
 export class ToppingTypeModule {}

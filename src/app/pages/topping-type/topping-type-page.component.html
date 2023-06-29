@@ -1,2 +1,158 @@
-  <p-messages></p-messages>
+<p-messages></p-messages>
 <p-confirmDialog></p-confirmDialog>
+<button
+  pButton
+  type="button"
+  label="Add Topping Type"
+  (click)="showAddToppingTypeDialog()"
+  class="mb-3"
+></button>
+<p-dialog
+  header="Add Topping Type"
+  [(visible)]="displayAddToppingTypeDialog"
+  [responsive]="true"
+  [modal]="true"
+  [style]="{ width: '400px' }"
+  [baseZIndex]="10000"
+>
+  <div class="p-fluid">
+    <div class="p-field mb-3">
+      <label for="name">Type</label>
+      <input
+        id="name"
+        type="text"
+        pInputText
+        [(ngModel)]="newToppingType.type"
+      />
+    </div>
+    <div class="p-fluid mb-3">
+      <label for="toppingTypePrice">Price (USD)</label>
+      <p-inputNumber
+        id="toppingTypePrice"
+        name="toppingTypePrice"
+        [min]="0.01"
+        [step]="0.01"
+        [(ngModel)]="newToppingType.price"
+        mode="currency"
+        currency="USD"
+        locale="en-US"
+        placeholder="Enter price"
+      ></p-inputNumber>
+    </div>
+  </div>
+  <div class="p-dialog-footer">
+    <button
+      pButton
+      type="button"
+      label="Cancel"
+      class="p-button-secondary"
+      (click)="hideAddToppingTypeDialog()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Save"
+      class="p-button-primary"
+      (click)="createToppingType()"
+    ></button>
+  </div>
+</p-dialog>
+
+<p-table
+  [value]="this.toppingTypes"
+  [paginator]="true"
+  [rows]="12"
+  [responsive]="true"
+  [selectionMode]="'single'"
+  responsiveLayout="scroll"
+  [rowsPerPageOptions]="[12, 24, 36]"
+  [rowHover]="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Type</th>
+      <th>Price</th>
+      <th>Actions</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-toppingType>
+    <tr>
+      <td style="width: 43%; min-width: 8rem">{{ toppingType.type }}</td>
+              <td style="width: 43%; min-width: 8rem">
+          {{ toppingType.price | currency : "USD" }}
+        </td>
+
+      <td style="width: 14%; min-width: 10rem">
+        <button
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-pencil"
+          class="p-button-rounded p-button-success mr-2"
+          (click)="this.showDialogToEdit(toppingType)"
+        ></button>
+        <button
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-trash"
+          class="p-button-rounded p-button-danger"
+          (click)="this.softDeleteToppingType(toppingType._id)"
+        ></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-dialog
+  header="Add Topping Type"
+  [(visible)]="displayEditToppingTypeDialog"
+  [responsive]="true"
+  [modal]="true"
+  [style]="{ width: '400px' }"
+  [baseZIndex]="10000"
+>
+  <div class="p-fluid">
+    <div class="p-field mb-3">
+      <label for="name">Type</label>
+      <input
+        id="name"
+        type="text"
+        pInputText
+        [(ngModel)]="toppingType.type"
+      />
+    </div>
+    <div class="p-fluid mb-3">
+      <label for="toppingTypePrice">Price (USD)</label>
+      <p-inputNumber
+        id="toppingTypePrice"
+        name="toppingTypePrice"
+        [min]="0.01"
+        [step]="0.01"
+        [(ngModel)]="toppingType.price"
+        mode="currency"
+        currency="USD"
+        locale="en-US"
+        placeholder="Enter price"
+      ></p-inputNumber>
+    </div>
+  </div>
+  <div class="p-dialog-footer">
+    <button
+      pButton
+      type="button"
+      label="Cancel"
+      class="p-button-secondary"
+      (click)="hideDialogToEdit()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Save"
+      class="p-button-primary"
+      (click)="updateToppingType()"
+    ></button>
+  </div>
+</p-dialog>
+
