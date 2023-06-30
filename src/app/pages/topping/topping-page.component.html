@@ -1,2 +1,145 @@
-  <p-messages></p-messages>
+<p-messages></p-messages>
 <p-confirmDialog></p-confirmDialog>
+<button
+  pButton
+  type="button"
+  label="Add Topping"
+  (click)="showAddToppingDialog()"
+  class="mb-3"
+></button>
+<p-dialog
+  header="Add Topping"
+  [(visible)]="displayAddToppingDialog"
+  [responsive]="true"
+  [modal]="true"
+  [style]="{ width: '400px' }"
+  [baseZIndex]="10000"
+>
+  <div class="p-fluid">
+    <div class="p-field mb-3">
+      <label for="item">Item</label>
+      <input
+        id="item"
+        type="text"
+        pInputText
+        [(ngModel)]="newTopping.item"
+      />
+    </div>
+    <div class="p-fluid mb-3">
+    <label for="productPrice">Topping type</label>
+    <p-dropdown
+      id="mondayStart"
+      [options]="toppingTypes"
+      [(ngModel)]="newTopping.toppingType"
+      name="size"
+    ></p-dropdown>
+  </div>
+  </div>
+  <div class="p-dialog-footer">
+    <button
+      pButton
+      type="button"
+      label="Cancel"
+      class="p-button-secondary"
+      (click)="hideAddToppingDialog()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Save"
+      class="p-button-primary"
+      (click)="addNewTopping()"
+    ></button>
+  </div>
+</p-dialog>
+
+<p-table
+  [value]="this.toppings"
+  [paginator]="true"
+  [rows]="12"
+  [responsive]="true"
+  [selectionMode]="'single'"
+  responsiveLayout="scroll"
+  [rowsPerPageOptions]="[12, 24, 36]"
+  [rowHover]="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Item</th>
+      <th>Topping Type</th>
+      <th>Actions</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-topping>
+    <tr>
+      <td style="width: 43%; min-width: 8rem">{{ topping.item }}</td>
+      <td style="width: 43%; min-width: 8rem">{{ topping.toppingType.type }}</td>
+
+      <td style="width: 14%; min-width: 10rem">
+        <button
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-pencil"
+          class="p-button-rounded p-button-success mr-2"
+          (click)="this.showDialogToEdit(topping)"
+        ></button>
+        <button
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-trash"
+          class="p-button-rounded p-button-danger"
+          (click)="this.deleteTopping(topping._id)"
+        ></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-dialog
+  header="Edit Topping"
+  [(visible)]="displayEditToppingDialog"
+  [responsive]="true"
+  [modal]="true"
+  [style]="{ width: '400px' }"
+  [baseZIndex]="10000"
+>
+  <div class="p-fluid">
+    <div class="p-field mb-3">
+      <label for="item">Item</label>
+      <input
+        id="item"
+        type="text"
+        pInputText
+        [(ngModel)]="topping.item"
+      />
+    </div>
+    <div class="p-fluid mb-3">
+    <label for="productPrice">Topping type</label>
+    <p-dropdown
+      id="mondayStart"
+      [options]="toppingTypes"
+      [(ngModel)]="topping.toppingType"
+      name="size"
+    ></p-dropdown>
+  </div>
+  </div>
+  <div class="p-dialog-footer">
+    <button
+      pButton
+      type="button"
+      label="Cancel"
+      class="p-button-secondary"
+      (click)="hideDialogToEdit()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Save"
+      class="p-button-primary"
+      (click)="updateTopping()"
+    ></button>
+  </div>
+</p-dialog>
