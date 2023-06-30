@@ -10,6 +10,7 @@ import { AdminService } from 'src/app/service/admin.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { StoreService } from 'src/app/service/store.service';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-admins',
@@ -32,41 +33,60 @@ export class AdminsComponent implements OnInit, OnDestroy, OnChanges {
   }
   searchQuery: string = '';
   searchResults$: Observable<any> | undefined;
+  isLoading: boolean = false;
 
   constructor(
     private router: Router,
     private storeService: StoreService,
     private adminService: AdminService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private titleService: Title
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
     throw new Error('Method not implemented.');
   }
 
   ngOnInit(): void {
+    this.titleService.setTitle('Bobazona | Manage Admins');
+
     this.admin = { id: '', fullName: '', store: '' };
     this.loadAdmins();
+    this.loadStores();
     this.displayAddAdminDialog = false;
+  }
+
+  loadStores() {
     this.storeService.getStores().subscribe(
       (data) => {
         this.stores = data.data;
         console.log(data.data);
       },
       (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error.statusText,
+        });
         console.log(error);
       }
     );
   }
 
   loadAdmins() {
+    this.isLoading = true;
+
     this.subscription.add(
       this.adminService.getAllAdmins().subscribe(
         (data) => {
+          this.isLoading = false;
+
           this.admins = data;
           console.log(data);
         },
         (error) => {
+                    this.isLoading = false;
+
           if (error.status === 409) {
             this.messageService.add({
               severity: 'error',
@@ -76,6 +96,12 @@ export class AdminsComponent implements OnInit, OnDestroy, OnChanges {
             setInterval(() => {
               this.router.navigate(['/login']);
             }, 2000);
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: error.statusText,
+            });
           }
           console.log(error);
         }
@@ -115,12 +141,13 @@ export class AdminsComponent implements OnInit, OnDestroy, OnChanges {
               setInterval(() => {
                 this.router.navigate(['/login']);
               }, 2000);
+            } else {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: error.statusText,
+              });
             }
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: 'Error adding admin',
-            });
             console.log(error);
           }
         )
@@ -147,12 +174,13 @@ export class AdminsComponent implements OnInit, OnDestroy, OnChanges {
               setInterval(() => {
                 this.router.navigate(['/login']);
               }, 2000);
+            } else {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: error.statusText,
+              });
             }
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: 'Error updating admin',
-            });
             console.log(error);
           }
         )
@@ -182,12 +210,13 @@ export class AdminsComponent implements OnInit, OnDestroy, OnChanges {
             setInterval(() => {
               this.router.navigate(['/login']);
             }, 2000);
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: error.statusText,
+            });
           }
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Error deleting admin',
-          });
           console.log(error);
         }
       )
@@ -248,5 +277,8 @@ export class AdminsComponent implements OnInit, OnDestroy, OnChanges {
           )
         )
       : this.loadAdmins();
+  }
+  onGlobalFilter(table: any, event: Event) {
+    table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
 }

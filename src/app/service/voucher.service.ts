@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { LoginService } from './login.service';
+import { LoginService } from './login.service';import { environment } from 'src/environments/environment';
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class VoucherService {
-  apiUrl = 'http://localhost:8081/api/vouchers';
+  apiUrl = `${environment.apiUrl}/vouchers`;
 
   constructor(private http: HttpClient, public loginService: LoginService) {}
 

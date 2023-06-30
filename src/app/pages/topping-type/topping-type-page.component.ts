@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { ToppingTypeService } from 'src/app/service/topping-type.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-topping-type-page',
@@ -9,29 +10,39 @@ import { ToppingTypeService } from 'src/app/service/topping-type.service';
   styleUrls: ['./topping-type-page.component.scss'],
   providers: [ConfirmationService, MessageService],
 })
-export class ToppingTypePageComponent {
+export class ToppingTypePageComponent implements OnInit {
   toppingTypes: any = [];
   toppingType: any = { type: '', price: 0.01 };
   newToppingType: any = { type: '', price: 0.01 };
   displayAddToppingTypeDialog: boolean = false;
   displayEditToppingTypeDialog: boolean = false;
+  isLoading: boolean = false;
 
   constructor(
     private toppingTypeService: ToppingTypeService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private titleService: Title
   ) {}
 
   ngOnInit() {
+    this.titleService.setTitle('Bobazona | Manage Topping Types');
+
     this.getToppingTypes();
   }
 
   getToppingTypes() {
-    this.toppingTypeService.getToppingTypes().subscribe(
-      (res) => {
+        this.isLoading = true;
+
+
+        this.toppingTypeService.getToppingTypes().subscribe(
+          (res) => {
+        this.isLoading = false;
         this.toppingTypes = res.data;
       },
       (error) => {
+                  this.isLoading = false;
+
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
@@ -40,12 +51,6 @@ export class ToppingTypePageComponent {
         console.log(error);
       }
     );
-  }
-
-  getToppingType(id: string) {
-    this.toppingTypeService.getToppingType(id).subscribe((res) => {
-      console.log(res.data);
-    });
   }
 
   createToppingType() {
@@ -71,7 +76,6 @@ export class ToppingTypePageComponent {
   }
 
   updateToppingType() {
-
     this.toppingTypeService
       .updateToppingType(this.toppingType._id, this.toppingType)
       .subscribe(
@@ -170,5 +174,8 @@ export class ToppingTypePageComponent {
   }
   hideDialogToEdit() {
     this.displayEditToppingTypeDialog = false;
+  }
+  onGlobalFilter(table: any, event: Event) {
+    table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
 }

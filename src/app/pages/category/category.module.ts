@@ -14,6 +14,7 @@ import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { FileUploadModule } from 'primeng/fileupload';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 const routes: Routes = [
   {
@@ -37,6 +38,7 @@ const routes: Routes = [
     DropdownModule,
     InputTextareaModule,
     FileUploadModule,
+    ProgressSpinnerModule,
   ],
 })
 export class CategoryModule {}

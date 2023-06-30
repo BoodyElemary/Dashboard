@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { StoreService } from 'src/app/service/store.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-store-page',
@@ -74,26 +75,48 @@ export class StorePageComponent implements OnInit {
     { label: '11:00 PM', value: '23' },
     { label: '11:59 PM', value: '24' },
   ];
+  editHours: boolean = false;
+  isLoading: boolean = false;
+
   constructor(
     private storeService: StoreService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService // Inject MessageService
+    private messageService: MessageService,
+    private titleService: Title
   ) {}
 
   ngOnInit() {
+    this.titleService.setTitle('Bobazona | Manage Stores');
+
     this.getStores();
   }
 
   getStores(): void {
-    this.storeService.getStores().subscribe((stores) => {
-      this.stores = stores.data;
-      console.log(this.stores);
-      console.log(stores);
-    });
+    this.isLoading = true;
+
+    this.storeService.getStores().subscribe(
+      (stores) => {
+        this.isLoading = false;
+        this.stores = stores.data;
+        console.log(this.stores);
+        console.log(stores);
+      },
+      (error) => {
+                  this.isLoading = false;
+
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error.statusText,
+        });
+        console.log(error);
+      }
+    );
   }
 
   save(): void {
     if (!this.isNewStore) {
+      if (!this.editHours) this.store.workingHours = null;
       this.storeService
         .updateStore(this.store, this.heroImageFile, this.pageImageFile)
         .subscribe(() => {
@@ -161,6 +184,7 @@ export class StorePageComponent implements OnInit {
   }
 
   showDialogToEdit(store: any): void {
+    this.editHours = false;
     this.isNewStore = false;
     this.displayDialog = true;
     this.store = store;
@@ -210,7 +234,6 @@ export class StorePageComponent implements OnInit {
           }
         );
       },
-
     });
   }
 
@@ -252,5 +275,8 @@ export class StorePageComponent implements OnInit {
     if (event.currentFiles && event.currentFiles.length) {
       this.pageImageFile = event.currentFiles[0];
     }
+  }
+  onGlobalFilter(table: any, event: Event) {
+    table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
 }

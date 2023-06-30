@@ -61,6 +61,8 @@
   </div>
 </p-dialog>
 <p-table
+  #dt
+  [globalFilterFields]="['name', 'description']"
   [value]="this.categories"
   [paginator]="true"
   [rows]="12"
@@ -71,6 +73,23 @@
   [rowHover]="true"
   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
 >
+  <ng-template pTemplate="caption">
+    <div
+      class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
+    >
+      <h5 class="m-0">Manage Categories</h5>
+      <span class="block mt-2 md:mt-0 p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input
+          pInputText
+          type="text"
+          (input)="onGlobalFilter(dt, $event)"
+          placeholder="Search..."
+          class="w-full sm:w-auto"
+        />
+      </span>
+    </div>
+  </ng-template>
   <ng-template pTemplate="header">
     <tr>
       <th>Image</th>
@@ -81,16 +100,15 @@
   </ng-template>
   <ng-template pTemplate="body" let-category>
     <tr>
-
       <td style="width: 24%; min-width: 10rem">
         <img
           [src]="category.picture"
           [alt]="category.name"
           width="100"
           class="shadow-4"
-          />
-        </td>
-        <td style="width: 24%; min-width: 10rem">{{ category.name }}</td>
+        />
+      </td>
+      <td style="width: 24%; min-width: 10rem">{{ category.name }}</td>
       <td style="width: 38%; min-width: 14rem">{{ category.description }}</td>
 
       <td style="width: 14%; min-width: 10rem">
@@ -114,6 +132,9 @@
     </tr>
   </ng-template>
 </p-table>
+<div class="text-center" *ngIf="isLoading">
+  <p-progressSpinner *ngIf="isLoading"></p-progressSpinner>
+</div>
 <p-dialog
   header="Edit Category"
   [(visible)]="displayEditCategoryDialog"

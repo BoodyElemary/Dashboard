@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { BaseService } from 'src/app/service/base.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-base-page',
@@ -9,12 +10,15 @@ import { BaseService } from 'src/app/service/base.service';
   styleUrls: ['./base-page.component.scss'],
   providers: [ConfirmationService, MessageService],
 })
-export class BasePageComponent {
+export class BasePageComponent implements OnInit {
   constructor(
     private baseService: BaseService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private titleService: Title
   ) {}
+  isLoading: boolean = false;
+
   bases: any[] = [];
   base: any = {
     name: '',
@@ -29,11 +33,17 @@ export class BasePageComponent {
   displayEditBaseDialog: boolean = false;
 
   ngOnInit(): void {
+    this.titleService.setTitle('Bobazona | Manage Bases');
+
     this.getAllBases();
   }
   getAllBases() {
+    this.isLoading = true;
+
     this.baseService.getAllBases().subscribe(
       (response: any) => {
+        this.isLoading = false;
+
         if (response.success) {
           this.bases = response.data;
           console.log(response.data);
@@ -42,6 +52,13 @@ export class BasePageComponent {
         }
       },
       (error) => {
+                  this.isLoading = false;
+
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error.statusText,
+        });
         console.log(error);
       }
     );
@@ -158,5 +175,8 @@ export class BasePageComponent {
     if (event.currentFiles && event.currentFiles.length) {
       this.imageFile = event.currentFiles[0];
     }
+  }
+  onGlobalFilter(table: any, event: Event) {
+    table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
 }

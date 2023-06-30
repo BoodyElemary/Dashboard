@@ -1,16 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { ToppingService } from 'src/app/service/topping.service';
 import { ToppingTypeService } from 'src/app/service/topping-type.service';
+import { Title } from '@angular/platform-browser';
+
 @Component({
   selector: 'app-topping-page',
   templateUrl: './topping-page.component.html',
   styleUrls: ['./topping-page.component.scss'],
   providers: [ConfirmationService, MessageService],
 })
-export class ToppingPageComponent {
+export class ToppingPageComponent implements OnInit {
   toppingTypes: any = [];
+  isLoading: boolean = false;
 
   toppings: any[] = [];
   topping: any = {
@@ -28,16 +31,22 @@ export class ToppingPageComponent {
     private toppingTypeService: ToppingTypeService,
     private toppingService: ToppingService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private titleService: Title
   ) {}
   ngOnInit(): void {
+    this.titleService.setTitle('Bobazona | Manage Toppings');
+
     this.getAllToppings();
     this.getToppingTypes();
   }
 
   getToppingTypes() {
+    this.isLoading = true;
+
     this.toppingTypeService.getToppingTypes().subscribe(
       (data) => {
+        this.isLoading = false;
         data.data.forEach((toppingType: any) => {
           this.toppingTypes.push({
             label: toppingType.type,
@@ -46,6 +55,8 @@ export class ToppingPageComponent {
         });
       },
       (error) => {
+                  this.isLoading = false;
+
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
@@ -186,5 +197,8 @@ export class ToppingPageComponent {
   }
   hideDialogToEdit() {
     this.displayEditToppingDialog = false;
+  }
+  onGlobalFilter(table: any, event: Event) {
+    table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
 }

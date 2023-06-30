@@ -3,6 +3,8 @@ import { LoginService } from 'src/app/service/login.service';
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { Title } from '@angular/platform-browser';
+
 @Component({
   providers: [MessageService],
 
@@ -25,17 +27,25 @@ export class LoginPageComponent {
   password: string = '';
   role: string = 'admin';
   remember: boolean = false;
+  isLoading: boolean = false;
+
   constructor(
     private loginService: LoginService,
     private router: Router,
-    private messageService: MessageService
-  ) {}
+    private messageService: MessageService,
+    private titleService: Title
+  ) {
+    this.titleService.setTitle('Bobazona | Dashboard Login');
+  }
 
   onSubmit() {
+    this.isLoading = true;
+
     console.log(this.fullName, this.password, this.role, this.remember);
     this.loginService
       .login(this.fullName, this.password, this.role, this.remember)
       .then((success) => {
+        this.isLoading = false;
         if (success) {
           // Navigate to the home page if login is successful
           this.router.navigate(['/']);
@@ -49,6 +59,7 @@ export class LoginPageComponent {
         }
       })
       .catch((error) => {
+        this.isLoading = false;
         console.error(error);
         // Display an error message if an error occurs during login
         this.messageService.add({
@@ -57,5 +68,8 @@ export class LoginPageComponent {
           detail: 'An error occurred during login',
         });
       });
+  }
+  onGlobalFilter(table: any, event: Event) {
+    table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
 }

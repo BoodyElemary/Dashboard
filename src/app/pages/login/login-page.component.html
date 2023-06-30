@@ -1,5 +1,7 @@
-  <p-messages></p-messages>
-
+<p-messages></p-messages>
+<div class="text-center loading" *ngIf="isLoading">
+  <p-progressSpinner *ngIf="isLoading"></p-progressSpinner>
+</div>
 <div
   class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden"
 >
@@ -57,14 +59,17 @@
             <label for="role" class="block text-900 font-medium text-xl mb-2"
               >Role</label
             >
-            <select
-              [(ngModel)]="role"
+            <p-dropdown
               id="role"
-              class="w-full md:w-30rem p-3 text-xl"
-            >
-              <option value="admin">Admin</option>
-              <option value="super">Super Admin</option>
-            </select>
+              [options]="[
+                { label: 'Admin', value: 'admin' },
+                { label: 'Super Admin', value: 'super' }
+              ]"
+              [(ngModel)]="role"
+              name="role"
+              class="w-full md:w-30rem text-xl"
+              [style]="{ width: '100%' }"
+            ></p-dropdown>
           </div>
 
           <div

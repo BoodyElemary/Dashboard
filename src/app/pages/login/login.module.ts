@@ -9,6 +9,8 @@ import { PasswordModule } from 'primeng/password';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
 import { MessagesModule } from 'primeng/messages';
+import { DropdownModule } from 'primeng/dropdown';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 const routes: Routes = [
   {
@@ -29,6 +31,8 @@ const routes: Routes = [
     FormsModule,
     PasswordModule,
     MessagesModule,
+    DropdownModule,
+    ProgressSpinnerModule,
   ],
 })
 export class LoginModule {}
