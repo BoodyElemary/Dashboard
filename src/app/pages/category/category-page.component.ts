@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { CategoryService } from 'src/app/service/category.service';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-category-page',
@@ -9,7 +10,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./category-page.component.scss'],
   providers: [ConfirmationService, MessageService],
 })
-export class CategoryPageComponent {
+export class CategoryPageComponent implements OnInit {
   categories: any = [];
   isNewCategory: boolean = false;
   imageFile: File | null = null;
@@ -17,12 +18,14 @@ export class CategoryPageComponent {
   category: any = { name: '', description: '' };
   displayAddCategoryDialog: boolean = false;
   displayEditCategoryDialog: boolean = false;
+  isLoading: boolean = false;
 
   constructor(
     private router: Router,
     private categoryService: CategoryService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private titleService: Title
   ) {}
 
   showAddCategoryDialog() {
@@ -49,15 +52,22 @@ export class CategoryPageComponent {
   }
 
   ngOnInit() {
+    this.titleService.setTitle('Bobazona | Manage Categories');
+
     this.loadCategories();
   }
 
   loadCategories() {
+    this.isLoading = true;
+
     this.categoryService.getAllCategories().subscribe(
       (data) => {
+        this.isLoading = false;
         this.categories = data.data;
       },
       (error) => {
+                  this.isLoading = false;
+
         if (error.status === 409) {
           this.messageService.add({
             severity: 'error',
@@ -173,12 +183,13 @@ export class CategoryPageComponent {
               setInterval(() => {
                 this.router.navigate(['/login']);
               }, 2000);
+            } else {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: error.statusText,
+              });
             }
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: 'Error deleting category!',
-            });
             console.log(error);
           }
         );
@@ -187,19 +198,48 @@ export class CategoryPageComponent {
   }
 
   hardDeleteCategory(id: string) {
-    this.categoryService.hardDeleteCategory(id).subscribe(
-      (data) => {
-        console.log(data);
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to delete this store?',
+      accept: () => {
+        this.categoryService.hardDeleteCategory(id).subscribe(
+          (data) => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Category deleted successfully',
+            });
+            this.loadCategories();
+          },
+          (error) => {
+            if (error.status === 409) {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Already logged in from another device!',
+              });
+              setInterval(() => {
+                this.router.navigate(['/login']);
+              }, 2000);
+            } else {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: error.statusText,
+              });
+            }
+            console.log(error);
+          }
+        );
       },
-      (error) => {
-        console.log(error);
-      }
-    );
+    });
   }
 
   onCategoryImageChange(event: any) {
     if (event.currentFiles && event.currentFiles.length) {
       this.imageFile = event.currentFiles[0];
     }
+  }
+  onGlobalFilter(table: any, event: Event) {
+    table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
 }

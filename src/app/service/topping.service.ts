@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { LoginService } from './login.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs';import { environment } from 'src/environments/environment';
+
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ import { Observable } from 'rxjs';
 export class ToppingService {
   constructor(public loginService: LoginService, private http: HttpClient) {}
 
-  private API_URL = 'http://localhost:8081/api/toppings';
+  private API_URL = `${environment.apiUrl}/toppings`;
 
   getAllToppings(): Observable<any[]> {
     const headers = new HttpHeaders({

@@ -12,6 +12,7 @@ import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MessagesModule } from 'primeng/messages';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 const routes: Routes = [
   {
@@ -33,6 +34,7 @@ const routes: Routes = [
     DropdownModule,
     ConfirmDialogModule,
     MessagesModule,
+    ProgressSpinnerModule,
   ],
   providers: [MessageService, ConfirmationService],
 })

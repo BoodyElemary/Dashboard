@@ -1,14 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { FlavorService } from 'src/app/service/flavor.service';
+import { Title } from '@angular/platform-browser';
+
 @Component({
   selector: 'app-flavor-page',
   templateUrl: './flavor-page.component.html',
   styleUrls: ['./flavor-page.component.scss'],
   providers: [ConfirmationService, MessageService],
 })
-export class FlavorPageComponent {
+export class FlavorPageComponent implements OnInit {
   flavors: any = [];
   displayAddFlavorDialog: boolean = false;
   displayEditFlavorDialog: boolean = false;
@@ -20,22 +22,31 @@ export class FlavorPageComponent {
     name: '',
     price: 0.01,
   };
+  isLoading: boolean = false;
 
   constructor(
     private flavorService: FlavorService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private titleService: Title
   ) {}
   ngOnInit() {
+    this.titleService.setTitle('Bobazona | Manage Flavors');
+
     this.getFlavors();
   }
 
   getFlavors() {
+    this.isLoading = true;
+
     this.flavorService.getFlavors().subscribe(
       (data) => {
+        this.isLoading = false;
         this.flavors = data.data;
       },
       (error) => {
+                  this.isLoading = false;
+
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
@@ -160,5 +171,8 @@ export class FlavorPageComponent {
   }
   hideEditFlavorDialog() {
     this.displayEditFlavorDialog = false;
+  }
+  onGlobalFilter(table: any, event: Event) {
+    table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
 }

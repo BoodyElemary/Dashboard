@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { LoginService } from './login.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs';import { environment } from 'src/environments/environment';
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class ToppingTypeService {
   constructor(public loginService: LoginService, private http: HttpClient) {}
-  private apiUrl = 'http://localhost:8081/api/toppingsType';
+  private apiUrl = `${environment.apiUrl}/toppingsType`;
 
   getToppingTypes(): Observable<any> {
     const headers = new HttpHeaders({

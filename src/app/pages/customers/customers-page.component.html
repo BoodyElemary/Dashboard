@@ -1,4 +1,178 @@
-  <p-messages></p-messages>
+<p-messages></p-messages>
 <p-confirmDialog></p-confirmDialog>
+<p-table
+  #dt
+  [globalFilterFields]="['firstName', 'lastName', 'email', 'phone']"
+  [value]="this.customers"
+  [paginator]="true"
+  [rows]="12"
+  [responsive]="true"
+  [selectionMode]="'single'"
+  responsiveLayout="scroll"
+  [rowsPerPageOptions]="[12, 24, 36]"
+  [rowHover]="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+>
+  <ng-template pTemplate="caption">
+    <div
+      class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
+    >
+      <h5 class="m-0">Manage Customers</h5>
+      <span class="block mt-2 md:mt-0 p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input
+          pInputText
+          type="text"
+          (input)="onGlobalFilter(dt, $event)"
+          placeholder="Search..."
+          class="w-full sm:w-auto"
+        />
+      </span>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Active</th>
+      <th>Block</th>
+      <th>Actions</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-customer>
+    <tr>
+      <td style="width: 24%; min-width: 12rem">
+        {{ customer.firstName + " " + customer.lastName }}
+      </td>
+      <td style="width: 26%; min-width: 12rem">{{ customer.email }}</td>
+      <td style="width: 12%; min-width: 10rem">{{ customer.phone }}</td>
+      <td style="width: 12%; min-width: 8rem">
+        <span [class]="'product-badge status-' + customer.isActive">{{
+          customer.isActive
+        }}</span>
+      </td>
+      <td style="width: 12%; min-width: 8rem">
+        <span [class]="'product-badge status-' + customer.isBlocked">{{
+          customer.isBlocked
+        }}</span>
+      </td>
 
-<button routerLink="/customer/:id">asas</button>
+      <td style="width: 14%; min-width: 10rem">
+        <button
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-user"
+          class="p-button-rounded p-button-info mr-2"
+          (click)="this.showProfileDialog(customer)"
+        ></button>
+        <button
+          pButton
+          pRipple
+          type="button"
+          icon="pi {{ !customer.isBlocked ? 'pi-user-minus' : 'pi-user-plus' }}"
+          class="p-button-rounded  {{
+            !customer.isBlocked ? 'p-button-danger' : 'p-button-success'
+          }}"
+          (click)="this.updateCustomer(customer._id, !customer.isBlocked)"
+        ></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+<div class="text-center" *ngIf="isLoading">
+  <p-progressSpinner *ngIf="isLoading"></p-progressSpinner>
+</div>
+<p-dialog
+  header="Profile"
+  [(visible)]="displayCustomerDialog"
+  [responsive]="true"
+  [modal]="true"
+  [style]="{ width: '600px' }"
+  [baseZIndex]="10000"
+>
+  <div class="p-fluid">
+    <div class="p-grid">
+      <div class="p-col-12 p-md-4">
+        <h3>{{ customer.firstName }} {{ customer.lastName }}</h3>
+        <p>
+          <span style="font-weight: bold">Email:</span> {{ customer.email }}
+        </p>
+        <p>
+          <span style="font-weight: bold">Phone:</span> {{ customer.phone }}
+        </p>
+        <p>
+          <span style="font-weight: bold">Active:</span>
+          <span [class]="'product-badge status-' + customer.isActive">{{
+            customer.isActive
+          }}</span>
+        </p>
+        <p>
+          <span style="font-weight: bold">Blocked:</span>
+          <span [class]="'product-badge status-' + customer.isBlocked">{{
+            customer.isBlocked
+          }}</span>
+        </p>
+        <p>
+          <span style="font-weight: bold">Created at:</span>
+          {{ customer.createdAt | date }}
+        </p>
+      </div>
+      <div class="p-col-12 p-md-8">
+        <h3>Orders</h3>
+        <div class="p-grid">
+          <div class="p-col-12 mb-3" *ngFor="let order of customer.orders">
+            <div class="p-card p-mb-3">
+              <div class="p-card-header">
+                <span>Order {{ order._id }}</span>
+                <span class="p-tag p-tag-info">{{ order.status }}</span>
+              </div>
+              <div class="p-card-body">
+                <div class="p-grid">
+                  <div class="p-col-12 p-md-6">
+                    <p>
+                      <span style="font-weight: bold">Store:</span>
+                      {{ order.store.name }}
+                    </p>
+                    <p>
+                      <span style="font-weight: bold">Arrival time:</span>
+                      {{ order.arrivalTime | date }}
+                    </p>
+                    <p>
+                      <span style="font-weight: bold">Pick up time:</span>
+                      {{ order.pickUpTime | date }}
+                    </p>
+                  </div>
+                  <div class="p-col-12 p-md-6">
+                    <p>
+                      <span style="font-weight: bold">Subtotal:</span>
+                      {{ order.subTotal | currency }}
+                    </p>
+                    <p>
+                      <span style="font-weight: bold">Discount:</span>
+                      {{ order.discount | currency }}
+                    </p>
+                    <p>
+                      <span style="font-weight: bold">Total price:</span>
+                      {{ order.totalPrice | currency }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="p-dialog-footer">
+    <button
+      pButton
+      type="button"
+      label="Cancel"
+      class="p-button-secondary"
+      (click)="hideProfileDialog()"
+    ></button>
+  </div>
+</p-dialog>

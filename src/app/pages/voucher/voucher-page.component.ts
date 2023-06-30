@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { VoucherService } from 'src/app/service/voucher.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-voucher-page',
@@ -9,7 +10,7 @@ import { VoucherService } from 'src/app/service/voucher.service';
   styleUrls: ['./voucher-page.component.scss'],
   providers: [ConfirmationService, MessageService],
 })
-export class VoucherPageComponent {
+export class VoucherPageComponent implements OnInit {
   minExpireDate: string = '';
 
   vouchers = [];
@@ -27,24 +28,33 @@ export class VoucherPageComponent {
   };
   displayAddVoucherDialog: boolean = false;
   displayEditVoucherDialog: boolean = false;
+  isLoading: boolean = false;
 
   constructor(
     private voucherService: VoucherService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private titleService: Title
   ) {}
 
   ngOnInit() {
+    this.titleService.setTitle('Bobazona | Manage Vouchers');
+
     this.getVouchers();
     this.minExpireDate = new Date().toISOString().slice(0, 10);
   }
 
   getVouchers() {
+    this.isLoading = true;
+
     this.voucherService.getVouchers().subscribe(
       (data: any) => {
+        this.isLoading = false;
         this.vouchers = data.data;
       },
       (error) => {
+        this.isLoading = false;
+
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
@@ -143,5 +153,8 @@ export class VoucherPageComponent {
   }
   hideDialogToEdit() {
     this.displayEditVoucherDialog = false;
+  }
+  onGlobalFilter(table: any, event: Event) {
+    table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
 }

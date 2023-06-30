@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom } from 'rxjs';import { environment } from 'src/environments/environment';
+
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,7 @@ export class LoginService {
     role: string,
     remember: boolean
   ): Promise<{ success: boolean; response: any }> {
-    const url = 'http://localhost:8081/api/login/admin';
+    const url = `${environment.apiUrl}/login/admin`;
     const body = { fullName: email, password: password, role: role };
 
     try {

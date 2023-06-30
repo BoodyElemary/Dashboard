@@ -31,4 +31,16 @@ export class OrdersService {
       headers,
     });
   }
+
+  getOrderById(id:string){
+        const headers = new HttpHeaders({
+          Authorization: this.loginService.getToken(),
+        });
+        return this.httpServ.get(
+          `${this.productsAPI}/orders/${id}`,
+          {
+            headers,
+          }
+        );
+  }
 }

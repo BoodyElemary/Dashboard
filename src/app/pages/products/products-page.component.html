@@ -101,6 +101,17 @@
       name="categories"
     ></p-dropdown>
   </div>
+  <div class="p-fluid">
+    <div class="p-field mb-3">
+      <label for="subCategory">Sub Category</label>
+      <input
+        id="subCategory"
+        type="text"
+        pInputText
+        [(ngModel)]="newProduct.subCategory"
+      />
+    </div>
+  </div>
   <div class="p-field mb-3">
     <label for="productImage">Product Image</label>
     <p-fileUpload
@@ -136,7 +147,9 @@
 <div *ngIf="!isLoading">
   <!-- Render your products here -->
   <p-table
+    #dt
     [value]="this.products"
+    [globalFilterFields]="['name', 'details.brief']"
     [paginator]="true"
     [rows]="12"
     [responsive]="true"
@@ -145,7 +158,25 @@
     [rowsPerPageOptions]="[12, 24, 36]"
     [rowHover]="true"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    dataKey="id"
   >
+    <ng-template pTemplate="caption">
+      <div
+        class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
+      >
+        <h5 class="m-0">Manage Products</h5>
+        <span class="block mt-2 md:mt-0 p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input
+            pInputText
+            type="text"
+            (input)="onGlobalFilter(dt, $event)"
+            placeholder="Search..."
+            class="w-full sm:w-auto"
+          />
+        </span>
+      </div>
+    </ng-template>
     <ng-template pTemplate="header">
       <tr>
         <th>Image</th>
@@ -181,7 +212,7 @@
           }}
         </td>
         <td style="width: 10%; min-width: 8rem">
-          {{ product.category.name }}
+          {{ product.category.name }}<span *ngIf="product.subCategory">{{" (" + product.subCategory + ")"}}</span>
         </td>
         <td style="width: 28%; min-width: 12rem">
           <p>

@@ -3,6 +3,7 @@ import { ProductService } from 'src/app/service/product.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { CategoryService } from 'src/app/service/category.service';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-products-page',
@@ -24,6 +25,7 @@ export class ProductsPageComponent implements OnInit {
     size: 'S',
     details: { brief: '', nutrition: '', ingredients: '' },
     category: '',
+    subCategory: '',
   };
   sizes: any[] = [
     { label: 'Small', value: 'S' },
@@ -35,6 +37,9 @@ export class ProductsPageComponent implements OnInit {
     price: 0.01,
     size: 'S',
     details: { brief: '', nutrition: '', ingredients: '' },
+    category: '',
+
+    subCategory: '',
   };
   displayAddProductDialog: boolean = false;
   displayEditProductDialog: boolean = false;
@@ -44,7 +49,8 @@ export class ProductsPageComponent implements OnInit {
     private productService: ProductService,
     private categoryService: CategoryService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private titleService: Title
   ) {}
 
   showAddProductDialog() {
@@ -54,6 +60,7 @@ export class ProductsPageComponent implements OnInit {
       size: 'S',
       details: { brief: '', nutrition: '', ingredients: '' },
       category: '',
+      subCategory: '',
     };
     this.imageFile = null;
     this.displayAddProductDialog = true;
@@ -66,6 +73,7 @@ export class ProductsPageComponent implements OnInit {
       size: 'S',
       details: { brief: '', nutrition: '', ingredients: '' },
       category: '',
+      subCategory: '',
     };
     this.imageFile = null;
     this.displayAddProductDialog = false;
@@ -83,6 +91,8 @@ export class ProductsPageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.titleService.setTitle('Bobazona | Manage Products');
+
     this.loadProducts();
     this.loadCategories();
   }
@@ -94,9 +104,11 @@ export class ProductsPageComponent implements OnInit {
       this.productService.getAllProducts().subscribe(
         (data) => {
           this.products = data.data;
-          this.isLoading = false; // Finish loading
+          this.isLoading = false;
         },
         (error) => {
+                    this.isLoading = false;
+
           if (error.status === 409) {
             this.messageService.add({
               severity: 'error',
@@ -162,7 +174,7 @@ export class ProductsPageComponent implements OnInit {
             this.messageService.add({
               severity: 'error',
               summary: 'Error',
-              detail: 'Error creating product!',
+              detail: error.statusText,
             });
             console.log(error);
           }
@@ -200,12 +212,13 @@ export class ProductsPageComponent implements OnInit {
             setInterval(() => {
               this.router.navigate(['/login']);
             }, 2000);
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: error.statusText,
+            });
           }
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Error editing product!',
-          });
           console.log(error);
         }
       );
@@ -234,12 +247,13 @@ export class ProductsPageComponent implements OnInit {
               setInterval(() => {
                 this.router.navigate(['/login']);
               }, 2000);
+            } else {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: error.statusText,
+              });
             }
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: 'Error deleting product!',
-            });
             console.log(error);
           }
         );
@@ -312,9 +326,19 @@ export class ProductsPageComponent implements OnInit {
           setInterval(() => {
             this.router.navigate(['/login']);
           }, 2000);
+        } else {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: error.statusText,
+          });
         }
         console.log(error);
       }
     );
+  }
+
+  onGlobalFilter(table: any, event: Event) {
+    table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
 }

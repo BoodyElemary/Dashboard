@@ -26,7 +26,7 @@
         id="percentage"
         name="percentage"
         [min]="0.01"
-        [max]="100"
+        [max]="1"
         [step]="0.01"
         [(ngModel)]="newVoucher.percentage"
         mode="decimal"
@@ -45,10 +45,15 @@
     </div>
     <div class="p-field mb-3">
       <label for="status">Status:</label>
-      <select id="status" pInputText [(ngModel)]="newVoucher.status">
-        <option value="applied">Applied</option>
-        <option value="expired">Expired</option>
-      </select>
+      <p-dropdown
+        id="status"
+        [options]="[
+          { label: 'Applied', value: 'applied' },
+          { label: 'Expired', value: 'expired' }
+        ]"
+        [(ngModel)]="newVoucher.status"
+        name="status"
+      ></p-dropdown>
     </div>
   </div>
   <div class="p-dialog-footer">
@@ -70,6 +75,8 @@
 </p-dialog>
 
 <p-table
+  #dt
+  [globalFilterFields]="['code', 'percentage']"
   [value]="this.vouchers"
   [paginator]="true"
   [rows]="12"
@@ -80,6 +87,23 @@
   [rowHover]="true"
   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
 >
+  <ng-template pTemplate="caption">
+    <div
+      class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
+    >
+      <h5 class="m-0">Manage Vouchers</h5>
+      <span class="block mt-2 md:mt-0 p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input
+          pInputText
+          type="text"
+          (input)="onGlobalFilter(dt, $event)"
+          placeholder="Search..."
+          class="w-full sm:w-auto"
+        />
+      </span>
+    </div>
+  </ng-template>
   <ng-template pTemplate="header">
     <tr>
       <th>Code</th>
@@ -93,7 +117,7 @@
     <tr>
       <td style="width: 20%; min-width: 8rem">{{ voucher.code }}</td>
       <td style="width: 20%; min-width: 8rem">
-        {{ voucher.percentage / 100 | percent : "1.2-2" }}
+        {{ voucher.percentage | percent : "1.2-2" }}
       </td>
       <td style="width: 24%; min-width: 14rem">
         {{ voucher.expireDate | date : "dd/ MM/ yyyy" }}
@@ -125,7 +149,9 @@
     </tr>
   </ng-template>
 </p-table>
-
+<div class="text-center" *ngIf="isLoading">
+  <p-progressSpinner *ngIf="isLoading"></p-progressSpinner>
+</div>
 <p-dialog
   header="Edit Category"
   [(visible)]="displayEditVoucherDialog"
@@ -164,10 +190,15 @@
     </div>
     <div class="p-field mb-3">
       <label for="status">Status:</label>
-      <select id="status" pInputText [(ngModel)]="voucher.status">
-        <option value="applied">Applied</option>
-        <option value="expired">Expired</option>
-      </select>
+      <p-dropdown
+        id="status"
+        [options]="[
+          { label: 'Applied', value: 'applied' },
+          { label: 'Expired', value: 'expired' }
+        ]"
+        [(ngModel)]="voucher.status"
+        name="status"
+      ></p-dropdown>
     </div>
   </div>
   <div class="p-dialog-footer">
