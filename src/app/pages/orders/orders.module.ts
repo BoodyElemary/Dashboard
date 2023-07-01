@@ -15,6 +15,9 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { FileUploadModule } from 'primeng/fileupload';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { DividerModule } from 'primeng/divider';
+import { DatePipe } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 
 const routes: Routes = [
   {
@@ -39,7 +42,8 @@ const routes: Routes = [
     FileUploadModule,
     ProgressSpinnerModule,
     InputNumberModule,
+    DividerModule,
   ],
-  providers: [ConfirmationService, MessageService],
+  providers: [ConfirmationService, MessageService, DatePipe, DecimalPipe],
 })
 export class OrdersModule {}
