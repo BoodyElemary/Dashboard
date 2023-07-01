@@ -54,6 +54,14 @@
           class="p-button-rounded p-button-success mr-2"
           (click)="this.showDialogToEdit(order)"
         ></button>
+        <button
+          pButton
+          pRipple
+          type="button"
+          icon="pi pi-eye"
+          class="p-button-rounded p-button-info mr-2"
+          (click)="this.showSingleOrder(order)"
+        ></button>
       </td>
     </tr>
   </ng-template>
@@ -96,3 +104,142 @@
       ></button>
     </div></div
 ></p-dialog>
+
+<p-dialog
+  header="Order #{{ singleOrder?._id }}"
+  [(visible)]="singleOrderDetails"
+  [responsive]="true"
+  [modal]="true"
+  [style]="{ width: '70vw' }"
+  [maximizable]="true"
+  class="order-title"
+>
+  <h3 class="single-order-headers mt-2 mb-0">Order information</h3>
+  <p-divider></p-divider>
+
+  <div class="grid">
+    <div
+      class="flex flex-row justify-content-start align-items-center flex-wrap gap-6 mx-3"
+    >
+      <div>
+        <h5 class="text-color-secondary text-900">Name:</h5>
+        <h5 class="single-order-text">
+          {{ singleOrder?.customer?.firstName }}
+          {{ singleOrder?.customer?.lastName }}
+        </h5>
+      </div>
+      <div>
+        <h5 class="text-color-secondary text-900">order status :</h5>
+        <h5 class="single-order-text">
+          {{ singleOrder?.status }}
+        </h5>
+      </div>
+      <div>
+        <h5 class="text-color-secondary text-900">order time :</h5>
+        <h5 class="single-order-text">
+          {{ singleOrder?.createdAt | date : "short" }}
+        </h5>
+      </div>
+      <div>
+        <h5 class="text-color-secondary text-900">arrival time :</h5>
+        <h5 class="single-order-text">
+          {{ singleOrder?.arrivalTime | date : "short" }}
+        </h5>
+      </div>
+      <div>
+        <h5 class="text-color-secondary text-900">pickup time :</h5>
+        <h5 class="single-order-text">
+          {{ singleOrder?.pickUpTime | date : "short" }}
+        </h5>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="single-order-headers mt-2 mb-0">Orderd Products</h3>
+  <p-divider></p-divider>
+
+  <div class="grid">
+    <!-- <h5 class="text-color-secondary text-900">Name:</h5>
+        <h5 class="single-order-text">
+          {{ singleOrder?.customer?.firstName }}
+          {{ singleOrder?.customer?.lastName }}
+        </h5> -->
+    <p-table
+      [value]="singleOrder?.orderedProducts"
+      [responsive]="true"
+      class="col-12"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>name</th>
+          <th>picture</th>
+          <th>price</th>
+          <th>size</th>
+          <th>quantity</th>
+          <th>total</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr>
+          <td>{{ product.product.name }}</td>
+          <td>
+            <img
+              src="{{ product.product.picture }}"
+              alt=""
+              class="product-img"
+            />
+          </td>
+          <td class="text-teal-700">${{ product.product.price }}</td>
+          <td>{{ product.product.size }}</td>
+          <td>{{ product.quantity }}</td>
+          <td class="text-teal-700">
+            $ {{ handleTotal(product.product.price, product.quantity) }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <div class="grid">
+    <!-- <h5 class="text-color-secondary text-900">Name:</h5>
+        <h5 class="single-order-text">
+          {{ singleOrder?.customer?.firstName }}
+          {{ singleOrder?.customer?.lastName }}
+        </h5> -->
+    <p-table
+      [value]="singleOrder?.orderedCustomizedProducts"
+      [responsive]="true"
+      class="col-12"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>name</th>
+          <th>picture</th>
+          <th>price</th>
+          <th>size</th>
+          <th>quantity</th>
+          <th>total</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr>
+          <td>{{ product.product.name }}</td>
+          <td>
+            <img
+              src="{{ product.product.picture }}"
+              alt=""
+              class="product-img"
+            />
+          </td>
+          <td class="text-teal-700">${{ product.product.price }}</td>
+          <td>{{ product.product.size }}</td>
+          <td>{{ product.quantity }}</td>
+          <td class="text-teal-700">
+            $
+            {{ handleTotal(product.product.price, product.quantity) }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</p-dialog>
