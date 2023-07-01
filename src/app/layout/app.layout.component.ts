@@ -5,6 +5,7 @@ import { LayoutService } from './service/app.layout.service';
 import { AppSidebarComponent } from './app.sidebar.component';
 import { AppTopBarComponent } from './app.topbar.component';
 import { LoginService } from '../service/login.service';
+import { SocketService } from '../service/socket.service';
 
 @Component({
   selector: 'app-layout',
@@ -25,7 +26,8 @@ export class AppLayoutComponent implements OnDestroy {
     public layoutService: LayoutService,
     public renderer: Renderer2,
     public router: Router,
-    public loginService: LoginService
+    public loginService: LoginService,
+    public scoket: SocketService
   ) {
     this.overlayMenuOpenSubscription =
       this.layoutService.overlayOpen$.subscribe(() => {
@@ -155,4 +157,9 @@ export class AppLayoutComponent implements OnDestroy {
   navigateToLogin() {
     this.router.navigate(['/login']);
   }
+  notifyOrder = this.scoket.on('newOrder').subscribe({
+    next: (data: any) => {
+      console.log(data);
+    },
+  });
 }
