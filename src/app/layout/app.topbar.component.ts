@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { LayoutService } from './service/app.layout.service';
 import { LoginService } from '../service/login.service';
@@ -17,9 +17,15 @@ export class AppTopBarComponent {
   @ViewChild('topbarmenu') menu!: ElementRef;
 
   storeName: string = '';
+  sidebarVisible: boolean = false;
+  @Input() newOrderData: any;
 
   constructor(
     public layoutService: LayoutService,
     public loginService: LoginService
   ) {}
+
+  logger() {
+    console.log(this.newOrderData);
+  }
 }

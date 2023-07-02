@@ -5,6 +5,8 @@ import { LayoutService } from './service/app.layout.service';
 import { AppSidebarComponent } from './app.sidebar.component';
 import { AppTopBarComponent } from './app.topbar.component';
 import { LoginService } from '../service/login.service';
+import { SocketService } from '../service/socket.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-layout',
@@ -16,6 +18,10 @@ export class AppLayoutComponent implements OnDestroy {
   menuOutsideClickListener: any;
 
   profileMenuOutsideClickListener: any;
+  messages: any[] = [];
+  newOrderData: any[] = JSON.parse(
+    localStorage.getItem('newOrderData') || '[]'
+  );
 
   @ViewChild(AppSidebarComponent) appSidebar!: AppSidebarComponent;
 
@@ -25,7 +31,9 @@ export class AppLayoutComponent implements OnDestroy {
     public layoutService: LayoutService,
     public renderer: Renderer2,
     public router: Router,
-    public loginService: LoginService
+    public loginService: LoginService,
+    public scoket: SocketService,
+    private messageSrevice: MessageService
   ) {
     this.overlayMenuOpenSubscription =
       this.layoutService.overlayOpen$.subscribe(() => {
@@ -155,4 +163,18 @@ export class AppLayoutComponent implements OnDestroy {
   navigateToLogin() {
     this.router.navigate(['/login']);
   }
+  notifyOrder = this.scoket.on('newOrder').subscribe({
+    next: (data: any) => {
+      console.log(data);
+      this.newOrderData.unshift(data);
+      localStorage.setItem('newOrderData', JSON.stringify(this.newOrderData));
+
+      this.messageSrevice.add({
+        severity: 'info',
+        summary: `New Order has been placed at ${Date.now()}  with arrival time:${
+          data.arrivalTime
+        }   `,
+      });
+    },
+  });
 }
