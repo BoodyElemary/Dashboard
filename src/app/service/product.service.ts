@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { LoginService } from './login.service';import { environment } from 'src/environments/environment';
-
+import { LoginService } from './login.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -79,5 +79,12 @@ export class ProductService {
       Authorization: this.loginService.getToken(),
     });
     return this.http.delete(`${this.baseUrl}/${id}/hard`, { headers });
+  }
+
+  updateStoreProductStatus(id: string, status: any) {
+    const headers = new HttpHeaders({
+      Authorization: this.loginService.getToken(),
+    });
+    return this.http.put(`${this.baseUrl}/updateStoreProductStatus/${id}`, status, { headers });
   }
 }

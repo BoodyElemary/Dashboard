@@ -123,6 +123,14 @@ const routes: Routes = [
             (m) => m.AdminStoreModule
           ),
       },
+      {
+        path: 'store-products',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/store-products/store-products.module').then(
+            (m) => m.StoreProductsModule
+          ),
+      },
     ],
   },
   {
