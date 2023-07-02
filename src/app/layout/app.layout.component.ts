@@ -19,6 +19,9 @@ export class AppLayoutComponent implements OnDestroy {
 
   profileMenuOutsideClickListener: any;
   messages: any[] = [];
+  newOrderData: any[] = JSON.parse(
+    localStorage.getItem('newOrderData') || '[]'
+  );
 
   @ViewChild(AppSidebarComponent) appSidebar!: AppSidebarComponent;
 
@@ -163,6 +166,9 @@ export class AppLayoutComponent implements OnDestroy {
   notifyOrder = this.scoket.on('newOrder').subscribe({
     next: (data: any) => {
       console.log(data);
+      this.newOrderData.unshift(data);
+      localStorage.setItem('newOrderData', JSON.stringify(this.newOrderData));
+
       this.messageSrevice.add({
         severity: 'info',
         summary: `New Order has been placed at ${Date.now()}  with arrival time:${

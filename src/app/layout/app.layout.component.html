@@ -3,7 +3,7 @@
   [ngClass]="containerClass"
   *ngIf="loginService.isLogin()"
 >
-  <app-topbar></app-topbar>
+  <app-topbar [newOrderData]="newOrderData"></app-topbar>
   <div class="layout-sidebar" *ngIf="loginService.isLogin()">
     <app-sidebar></app-sidebar>
   </div>
@@ -18,7 +18,7 @@
   <div class="layout-mask"></div>
 </div>
 <div class="layout-wrapper" *ngIf="!loginService.isLogin()">
-  <app-topbar></app-topbar>
+  <!-- <app-topbar></app-topbar> -->
 
   <div class="layout-main-container">
     <div>
