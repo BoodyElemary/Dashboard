@@ -1,0 +1,143 @@
+<!-- <p-progressSpinner></p-progressSpinner> -->
+
+<p-messages></p-messages>
+<p-confirmDialog></p-confirmDialog>
+
+<p-dropdown
+  id="categories"
+  [options]="currentCategories"
+  (onChange)="loadProducts()"
+  [(ngModel)]="current"
+  name="categories"
+  [style]="{ width: '100%' }"
+></p-dropdown>
+<div *ngIf="isLoading" class="text-center">
+  <p-progressSpinner></p-progressSpinner>
+</div>
+
+<div *ngIf="!isLoading">
+  <!-- Render your products here -->
+  <p-table
+    #dt
+    [value]="this.products"
+    [globalFilterFields]="['name', 'details.brief']"
+    [paginator]="true"
+    [rows]="12"
+    [responsive]="true"
+    [selectionMode]="'single'"
+    responsiveLayout="scroll"
+    [rowsPerPageOptions]="[12, 24, 36]"
+    [rowHover]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    dataKey="id"
+  >
+    <ng-template pTemplate="caption">
+      <div
+        class="flex flex-column md:flex-row md:justify-content-between md:align-items-center"
+      >
+        <h5 class="m-0">Manage Products</h5>
+        <span class="block mt-2 md:mt-0 p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input
+            pInputText
+            type="text"
+            (input)="onGlobalFilter(dt, $event)"
+            placeholder="Search..."
+            class="w-full sm:w-auto"
+          />
+        </span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Size</th>
+        <th>Category</th>
+        <th>Details</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+      <tr>
+        <td style="width: 14%; min-width: 10rem">
+          <img
+            [src]="product.picture"
+            [alt]="product.name"
+            width="100"
+            class="shadow-4"
+          />
+        </td>
+        <td style="width: 12%; min-width: 10rem">{{ product.name }}</td>
+        <td style="width: 10%; min-width: 8rem">
+          {{ product.price | currency : "USD" }}
+        </td>
+        <td style="width: 10%; min-width: 8rem">
+          {{
+            product.size === "M"
+              ? "Medium"
+              : product.size === "L"
+              ? "Large"
+              : "Small"
+          }}
+        </td>
+        <td style="width: 10%; min-width: 8rem">
+          {{ product.category.name
+          }}<span *ngIf="product.subCategory">{{
+            " (" + product.subCategory + ")"
+          }}</span>
+        </td>
+        <td style="width: 22%; min-width: 12rem">
+          <p>
+            <span style="font-weight: bold">Brief: </span
+            >{{ product.details.brief }}
+          </p>
+          <p>
+            <span style="font-weight: bold">Ingredients: </span
+            >{{ product.details.ingredients }}
+          </p>
+          <p>
+            <span style="font-weight: bold">Nutrition: </span
+            >{{ product.details.nutrition | json }}
+          </p>
+        </td>
+        <td style="width: 12%; min-width: 10rem">
+          <span
+            [class]="
+              'product-badge status-' + getStoreProductStatus(product.status)
+            "
+            >{{
+              getStoreProductStatus(product.status)
+                ? "Available"
+                : "Not available"
+            }}</span
+          >
+        </td>
+
+        <td style="width: 8%; min-width: 5rem">
+          <button
+            pButton
+            pRipple
+            type="button"
+            icon="pi {{
+              getStoreProductStatus(product.status) ? 'pi-times' : 'pi-check'
+            }}"
+            class="p-button-rounded {{
+              getStoreProductStatus(product.status)
+                ? 'p-button-danger'
+                : 'p-button-success'
+            }}"
+            (click)="
+              this.toggleStatus(
+                product._id,
+                getStoreProductStatus(product.status)
+              )
+            "
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
