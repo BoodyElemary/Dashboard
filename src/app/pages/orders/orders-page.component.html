@@ -114,7 +114,9 @@
   [maximizable]="true"
   class="order-title"
 >
-  <h3 class="single-order-headers mt-2 mb-0">Order information</h3>
+  <h3 class="mt-2 mb-0 text-color-secondary" style="font-family: serif">
+    Order information
+  </h3>
   <p-divider></p-divider>
 
   <div class="grid">
@@ -123,51 +125,56 @@
     >
       <div>
         <h5 class="text-color-secondary text-900">Name:</h5>
-        <h5 class="single-order-text">
+        <h5 class="text-900">
           {{ singleOrder?.customer?.firstName }}
           {{ singleOrder?.customer?.lastName }}
         </h5>
       </div>
       <div>
         <h5 class="text-color-secondary text-900">order status :</h5>
-        <h5 class="single-order-text">
+        <h5 class="text-900">
           {{ singleOrder?.status }}
         </h5>
       </div>
       <div>
         <h5 class="text-color-secondary text-900">order time :</h5>
-        <h5 class="single-order-text">
+        <h5 class="text-900">
           {{ singleOrder?.createdAt | date : "short" }}
         </h5>
       </div>
       <div>
         <h5 class="text-color-secondary text-900">arrival time :</h5>
-        <h5 class="single-order-text">
+        <h5 class="text-900">
           {{ singleOrder?.arrivalTime | date : "short" }}
         </h5>
       </div>
       <div>
         <h5 class="text-color-secondary text-900">pickup time :</h5>
-        <h5 class="single-order-text">
+        <h5 class="text-900">
           {{ singleOrder?.pickUpTime | date : "short" }}
         </h5>
       </div>
     </div>
   </div>
 
-  <h3 class="single-order-headers mt-2 mb-0">Orderd Products</h3>
+  <h3
+    class="single-order-headers mt-2 mb-0 text-color-secondary"
+    style="font-family: serif"
+  >
+    Orderd Products
+  </h3>
   <p-divider></p-divider>
 
   <div class="grid">
     <!-- <h5 class="text-color-secondary text-900">Name:</h5>
-        <h5 class="single-order-text">
+        <h5 class="text-900">
           {{ singleOrder?.customer?.firstName }}
           {{ singleOrder?.customer?.lastName }}
         </h5> -->
     <p-table
       [value]="singleOrder?.orderedProducts"
       [responsive]="true"
-      class="col-12"
+      class="col-12 custom-table-header"
     >
       <ng-template pTemplate="header">
         <tr>
@@ -200,46 +207,120 @@
     </p-table>
   </div>
 
-  <div class="grid">
-    <!-- <h5 class="text-color-secondary text-900">Name:</h5>
-        <h5 class="single-order-text">
-          {{ singleOrder?.customer?.firstName }}
-          {{ singleOrder?.customer?.lastName }}
-        </h5> -->
-    <p-table
-      [value]="singleOrder?.orderedCustomizedProducts"
-      [responsive]="true"
-      class="col-12"
-    >
-      <ng-template pTemplate="header">
-        <tr>
-          <th>name</th>
-          <th>picture</th>
-          <th>price</th>
-          <th>size</th>
-          <th>quantity</th>
-          <th>total</th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-product>
-        <tr>
-          <td>{{ product.product.name }}</td>
-          <td>
-            <img
-              src="{{ product.product.picture }}"
-              alt=""
-              class="product-img"
-            />
-          </td>
-          <td class="text-teal-700">${{ product.product.price }}</td>
-          <td>{{ product.product.size }}</td>
-          <td>{{ product.quantity }}</td>
-          <td class="text-teal-700">
-            $
-            {{ handleTotal(product.product.price, product.quantity) }}
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
+  <div *ngIf="singleOrder?.orderedCustomizedProducts.length > 0">
+    <div>
+      <!-- Orderd Customized Products starts -->
+      <h3
+        class="single-order-headers mt-2 mb-0 text-color-secondary"
+        style="font-family: serif"
+      >
+        Orderd Customized Products
+      </h3>
+    </div>
+    <p-divider></p-divider>
+    <div class="grid">
+      <!-- <h5 class="text-color-secondary text-900">Name:</h5>
+          <h5 class="text-900">
+            {{ singleOrder?.customer?.firstName }}
+            {{ singleOrder?.customer?.lastName }}
+          </h5> -->
+      <p-table
+        [value]="singleOrder?.orderedCustomizedProducts"
+        [dataKey]="'_id'"
+        [responsive]="true"
+        class="col-12 custom-table-header"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th></th>
+            <th>Base name</th>
+            <th>Base picture</th>
+            <th>Base price</th>
+            <th>Flavor name</th>
+            <th>Flavor price</th>
+            <th>Flavor quantity</th>
+            <th>Total</th>
+          </tr>
+        </ng-template>
+        <ng-template
+          pTemplate="body"
+          let-customizedProduct
+          let-expanded="expanded"
+        >
+          <tr>
+            <td>
+              <button
+                type="button"
+                pButton
+                pRipple
+                [pRowToggler]="customizedProduct"
+                class="p-button-text p-button-rounded p-button-plain"
+                [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+              ></button>
+            </td>
+            <td>{{ customizedProduct.base.name }}</td>
+            <td>
+              <img
+                src="{{ customizedProduct.base.picture }}"
+                alt=""
+                class="product-img"
+              />
+            </td>
+            <td class="text-teal-700">${{ customizedProduct.base.price }}</td>
+            <td>{{ customizedProduct.flavor.name }}</td>
+            <td>{{ customizedProduct.flavor.price }}</td>
+            <td>{{ customizedProduct.quantity }}</td>
+            <td>{{ customizedProduct.quantity }}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="rowexpansion" let-product>
+          <tr>
+            <td colspan="12">
+              <p-table
+                [value]="product.toppings"
+                [responsive]="true"
+                [tableStyle]="{ 'width.%': 100 }"
+                class="custom-table-header"
+              >
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>Topping name</th>
+                    <th>Topping type</th>
+                    <th>Topping price</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-topping>
+                  <tr>
+                    <td>{{ topping.item }}</td>
+                    <td>{{ topping.toppingType.type }}</td>
+                    <td>{{ topping.toppingType.price }}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <!-- Orderd Customized Products ends -->
+  </div>
+
+  <div class="flex flex-row justify-content-end align-items-end">
+    <div class="flex flex-column gap-2">
+      <div class="flex flex-row gap-5 justify-content-between">
+        <span class="text-2xl">SubTotal:</span>
+        <span class="text-2xl"> $ {{ singleOrder?.subTotal }}</span>
+      </div>
+      <div class="flex flex-row gap-5 justify-content-between">
+        <span class="text-2xl">Discount:</span>
+        <span class="text-2xl"> $ {{ singleOrder?.discount }}</span>
+      </div>
+      <div class="flex flex-row gap-5 justify-content-between">
+        <span class="text-3xl">Total:</span>
+        <span class="text-3xl text-teal-700">
+          $ {{ singleOrder?.totalPrice }}</span
+        >
+      </div>
+    </div>
   </div>
 </p-dialog>

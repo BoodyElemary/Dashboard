@@ -9,7 +9,7 @@
   </div>
   <div class="layout-main-container">
     <div class="layout-main" *ngIf="loginService.isLogin()">
-
+      <p-messages></p-messages>
       <router-outlet></router-outlet>
     </div>
     <app-footer></app-footer>

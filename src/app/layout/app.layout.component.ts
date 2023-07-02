@@ -6,6 +6,7 @@ import { AppSidebarComponent } from './app.sidebar.component';
 import { AppTopBarComponent } from './app.topbar.component';
 import { LoginService } from '../service/login.service';
 import { SocketService } from '../service/socket.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-layout',
@@ -17,6 +18,7 @@ export class AppLayoutComponent implements OnDestroy {
   menuOutsideClickListener: any;
 
   profileMenuOutsideClickListener: any;
+  messages: any[] = [];
 
   @ViewChild(AppSidebarComponent) appSidebar!: AppSidebarComponent;
 
@@ -27,7 +29,8 @@ export class AppLayoutComponent implements OnDestroy {
     public renderer: Renderer2,
     public router: Router,
     public loginService: LoginService,
-    public scoket: SocketService
+    public scoket: SocketService,
+    private messageSrevice: MessageService
   ) {
     this.overlayMenuOpenSubscription =
       this.layoutService.overlayOpen$.subscribe(() => {
@@ -160,6 +163,12 @@ export class AppLayoutComponent implements OnDestroy {
   notifyOrder = this.scoket.on('newOrder').subscribe({
     next: (data: any) => {
       console.log(data);
+      this.messageSrevice.add({
+        severity: 'info',
+        summary: `New Order has been placed at ${Date.now()}  with arrival time:${
+          data.arrivalTime
+        }   `,
+      });
     },
   });
 }

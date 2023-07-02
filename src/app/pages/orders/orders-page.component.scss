@@ -52,3 +52,18 @@ p-messages {
 .product-img {
   width: 100px;
 }
+
+// .full-width-table {
+//   width: 1800px !important;
+// }
+
+:host ::ng-deep .custom-table-header .p-datatable .p-datatable-thead > tr > th {
+  background: var(--primary-color) !important;
+  color: #fff !important;
+  font-family: serif !important;
+  font-size: larger;
+}
+
+.text-custom-recipt {
+  font-family: serif;
+}

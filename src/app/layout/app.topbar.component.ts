@@ -17,6 +17,7 @@ export class AppTopBarComponent {
   @ViewChild('topbarmenu') menu!: ElementRef;
 
   storeName: string = '';
+  sidebarVisible: boolean = false;
 
   constructor(
     public layoutService: LayoutService,
