@@ -19,4 +19,7 @@ export class DashboardServiceService {
       headers,
     });
   }
+  getAllStoreInsights() {
+    return this.httpServ.get(`${this.apiUrl}/insights`);
+  }
 }
