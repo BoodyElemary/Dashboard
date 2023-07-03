@@ -47,7 +47,7 @@ export class OrdersPageComponent {
     console.log(order);
     this.orderStatus = order.status;
     console.log(this.orderStatus);
-
+    this.singleOrder = order;
     this.displayEditVoucherDialog = true;
   }
 
@@ -103,5 +103,34 @@ export class OrdersPageComponent {
     return (parseFloat(price) * parseInt(quantity)).toFixed(2);
   }
 
-  updateStatus() {}
+  updateStatus() {
+    // Replace with the actual order ID
+    const orderId = this.singleOrder?._id;
+    const data = { status: this.orderStatus }; // Assuming the data to be sent includes the 'status' property
+    console.log(data);
+    this.orderService.editOrderStatus(orderId, data).subscribe(
+      () => {
+        // Handle the success response
+        console.log('Order status updated successfully');
+        // Perform any necessary actions, such as fetching the updated orders or displaying a success message
+        this.loadOrdersLazy({}); // Refresh the order list by calling the loadOrdersLazy function or any other method to fetch the updated orders
+        this.hideDialogToEdit();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Order status updated successfully',
+        });
+      },
+      (error) => {
+        // Handle the error response
+        console.error('Failed to update order status', error);
+        // Perform any necessary error handling, such as displaying an error message
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: error.statusText,
+        });
+      }
+    );
+  }
 }

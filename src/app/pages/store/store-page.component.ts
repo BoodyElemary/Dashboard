@@ -102,7 +102,7 @@ export class StorePageComponent implements OnInit {
         console.log(stores);
       },
       (error) => {
-                  this.isLoading = false;
+        this.isLoading = false;
 
         this.messageService.add({
           severity: 'error',
@@ -119,6 +119,7 @@ export class StorePageComponent implements OnInit {
       if (!this.editHours) this.store.workingHours = null;
       this.storeService
         .updateStore(this.store, this.heroImageFile, this.pageImageFile)
+
         .subscribe(() => {
           this.getStores();
           this.store = {

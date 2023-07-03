@@ -72,22 +72,26 @@
   [(visible)]="displayEditVoucherDialog"
   [responsive]="true"
   [modal]="true"
-  [style]="{ width: '400px' }"
+  [style]="{ 'max-width': '400px', 'min-height': '350px' }"
   [baseZIndex]="10000"
 >
   <div class="p-fluid">
-    <div class="p-field mb-3">
-      <div class="p-field mb-3">
-        <label for="status">Status:</label>
-        <select id="status" pInputText [(ngModel)]="orderStatus">
-          <option value="applied">pending</option>
-          <option value="expired">preparing</option>
-          <option value="expired">delivered</option>
-          <option value="expired">canceled</option>
-        </select>
-      </div>
+    <div class="p-field my-4">
+      <label for="status">Status:</label>
+      <p-dropdown
+        id="status"
+        [options]="[
+          { label: 'pending', value: 'pending' },
+          { label: 'preparing', value: 'preparing' },
+          { label: 'delivered', value: 'delivered' },
+          { label: 'canceled', value: 'canceled' }
+        ]"
+        [(ngModel)]="orderStatus"
+        name="status"
+      ></p-dropdown>
     </div>
-    <div class="p-dialog-footer">
+
+    <div class="p-dialog-footer mt-8">
       <button
         pButton
         type="button"
@@ -324,3 +328,6 @@
     </div>
   </div>
 </p-dialog>
+
+<p-messages></p-messages>
+<!-- Add this line to display messages -->
