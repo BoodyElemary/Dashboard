@@ -62,7 +62,7 @@ export class AppMenuComponent implements OnInit {
             {
               label: 'Dashboard',
               icon: 'pi pi-fw pi-chart-bar',
-              routerLink: ['/'],
+              routerLink: ['/superDashboard'],
             },
           ],
         },
