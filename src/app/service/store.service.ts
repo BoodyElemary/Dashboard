@@ -80,7 +80,9 @@ export class StoreService {
     if (heroImageFile)
       formData.append('heroImage', heroImageFile, heroImageFile.name);
 
-    return this.http.put<any>(this.storesUrl, formData, { headers });
+    return this.http.put<any>(`${this.storesUrl}/${store.name}`, formData, {
+      headers,
+    });
   }
 
   addStoreDay(id: string, day: string): Observable<any> {
