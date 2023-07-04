@@ -151,6 +151,20 @@ export class AppLayoutComponent implements OnDestroy {
     };
   }
 
+  getCurrentDateTime(): any {
+    const date = new Date();
+    const dateString = date.toLocaleString('en-US', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true
+    });
+    return dateString
+  }
+
   ngOnDestroy() {
     if (this.overlayMenuOpenSubscription) {
       this.overlayMenuOpenSubscription.unsubscribe();
@@ -171,9 +185,8 @@ export class AppLayoutComponent implements OnDestroy {
 
       this.messageSrevice.add({
         severity: 'info',
-        summary: `New Order has been placed at ${Date.now()}  with arrival time:${
-          data.arrivalTime
-        }   `,
+        summary: `New Order has been placed at ${this.getCurrentDateTime()} by ${data.customer}  with pick up time:${data.pickupTime
+          }   `,
       });
     },
   });

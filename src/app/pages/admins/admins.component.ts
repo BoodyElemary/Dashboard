@@ -66,7 +66,7 @@ export class AdminsComponent implements OnInit, OnDestroy, OnChanges {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: error.statusText,
+          detail: error.error.message,
         });
         console.log(error);
       }
@@ -100,7 +100,7 @@ export class AdminsComponent implements OnInit, OnDestroy, OnChanges {
             this.messageService.add({
               severity: 'error',
               summary: 'Error',
-              detail: error.statusText,
+              detail: error.error.message,
             });
           }
           console.log(error);
@@ -145,7 +145,7 @@ export class AdminsComponent implements OnInit, OnDestroy, OnChanges {
               this.messageService.add({
                 severity: 'error',
                 summary: 'Error',
-                detail: error.statusText,
+                detail: error.error.message,
               });
             }
             console.log(error);
@@ -178,7 +178,7 @@ export class AdminsComponent implements OnInit, OnDestroy, OnChanges {
               this.messageService.add({
                 severity: 'error',
                 summary: 'Error',
-                detail: error.statusText,
+                detail: error.error.message,
               });
             }
             console.log(error);
@@ -214,7 +214,7 @@ export class AdminsComponent implements OnInit, OnDestroy, OnChanges {
             this.messageService.add({
               severity: 'error',
               summary: 'Error',
-              detail: error.statusText,
+              detail: error.error.message,
             });
           }
           console.log(error);

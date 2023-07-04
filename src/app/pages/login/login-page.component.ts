@@ -45,8 +45,10 @@ export class LoginPageComponent {
     this.loginService
       .login(this.fullName, this.password, this.role, this.remember)
       .then((success) => {
+        console.log();
+        
         this.isLoading = false;
-        if (success) {
+        if (success.success) {
           // Navigate to the home page if login is successful
           this.router.navigate(['/']);
         } else {

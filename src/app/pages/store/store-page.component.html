@@ -282,7 +282,7 @@
       <th>Image</th>
       <th>Phone</th>
       <th>Location</th>
-      <th>Holiday</th>
+      <th>Status</th>
       <th>Actions</th>
     </tr>
   </ng-template>
@@ -308,8 +308,8 @@
       <td style="width: 14%; min-width: 9rem">{{ store.phone }}</td>
       <td style="width: 14%; min-width: 10rem">{{ store.location }}</td>
       <td style="width: 14%; min-width: 8rem">
-        <span [class]="'product-badge status-' + store.isHoliday">{{
-          store.isHoliday
+        <span [class]="'product-badge status-' + store.status">{{
+          store.status
         }}</span>
       </td>
       <td style="width: 14%; min-width: 10rem">
