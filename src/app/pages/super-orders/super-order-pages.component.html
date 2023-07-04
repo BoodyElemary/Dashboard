@@ -1,11 +1,11 @@
 <!-- orders-page.component.html -->
-<p-dropdown
+<!-- <p-dropdown
   id="categories"
   [options]="currentStores"
   [(ngModel)]="current"
   name="categories"
   [style]="{ width: '100%' }"
-></p-dropdown>
+></p-dropdown> -->
 <p-table
   [value]="orders"
   [responsive]="true"
@@ -249,8 +249,7 @@
             <th>Base price</th>
             <th>Flavor name</th>
             <th>Flavor price</th>
-            <th>Flavor quantity</th>
-            <th>Total</th>
+            <th>quantity</th>
           </tr>
         </ng-template>
         <ng-template
@@ -280,7 +279,6 @@
             <td class="text-teal-700">${{ customizedProduct.base.price }}</td>
             <td>{{ customizedProduct.flavor.name }}</td>
             <td>{{ customizedProduct.flavor.price }}</td>
-            <td>{{ customizedProduct.quantity }}</td>
             <td>{{ customizedProduct.quantity }}</td>
           </tr>
         </ng-template>
