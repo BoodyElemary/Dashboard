@@ -33,6 +33,7 @@ export class SuperOrderPagesComponent {
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
+
     this.orderService.getAllStores().subscribe(
       (response: any) => {
         console.log(response);
