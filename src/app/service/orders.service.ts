@@ -32,15 +32,23 @@ export class OrdersService {
     });
   }
 
-  getOrderById(id:string){
-        const headers = new HttpHeaders({
-          Authorization: this.loginService.getToken(),
-        });
-        return this.httpServ.get(
-          `${this.productsAPI}/orders/${id}`,
-          {
-            headers,
-          }
-        );
+  getOrderById(id: string) {
+    const headers = new HttpHeaders({
+      Authorization: this.loginService.getToken(),
+    });
+    return this.httpServ.get(`${this.productsAPI}/orders/${id}`, {
+      headers,
+    });
+  }
+
+  getSuperOrders(id: string, skip: number = 0) {
+    return this.httpServ.get(
+      `${this.productsAPI}/orders/stores/${id}?skip=${skip}&limit=10`
+    );
+  }
+  getAllStores() {
+    return this.httpServ.get(`${this.productsAPI}/stores`);
   }
 }
+
+// localhost:8081/api/orders/stores/all?skip=5&limit=10

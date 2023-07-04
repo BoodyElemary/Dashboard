@@ -131,6 +131,14 @@ const routes: Routes = [
             (m) => m.StoreProductsModule
           ),
       },
+      {
+        path: 'super-orders',
+        pathMatch: 'full',
+        loadChildren: () =>
+          import('./pages/super-orders/super-orders.module').then(
+            (m) => m.SuperOrdersModule
+          ),
+      },
     ],
   },
   {
